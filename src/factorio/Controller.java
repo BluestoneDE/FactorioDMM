@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class InterfaceController {
+public class Controller {
 
     private ObservableList<File> pictureList;
     private int width;
@@ -21,9 +22,11 @@ public class InterfaceController {
     private double brightness;
 
     @FXML
+    private ListView<File> pictureListView;
+    @FXML
     private TextArea previewTextArea;
     @FXML
-    private ListView<File> pictureListView;
+    private Font previewFont;
     @FXML
     private Label previewWidth;
     @FXML
@@ -54,12 +57,12 @@ public class InterfaceController {
             Image image = new Image(pictureList.get(0).toURI().toString());
             width = (int) image.getWidth();
             height = (int) image.getHeight();
+            brightness = 0.5;
             previewWidth.setText("Width: " + width + "px");
             previewHeight.setText("Height: " + height + "px");
             mathButton.setDisable(false);
+            brightnessSlider.setValue(brightness);
             brightnessSlider.setDisable(false);
-            brightnessSlider.setValue(50);
-            brightness = 0.5;
             updatePreview();
         }
     }
@@ -107,8 +110,13 @@ public class InterfaceController {
     }
 
     @FXML
+    private void selectAll() {
+        previewTextArea.selectAll();
+    }
+
+    @FXML
     private void updatePreview() {
-        brightness = brightnessSlider.getValue() / 100.0;
+        brightness = brightnessSlider.getValue();
         previewImage(new Image(pictureList.get(0).toURI().toString()));
     }
 
