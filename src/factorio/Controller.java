@@ -111,13 +111,10 @@ public class Controller {
     @FXML
     private void updatePreview() {
         brightness = brightnessSlider.getValue();
-        previewImage(new Image(pictureList.get(pictureList.indexOf(pictureListView.getFocusModel().getFocusedItem())).toURI().toString()));
-    }
-
-    private void previewImage(Image image) {
         StringBuilder previewText = new StringBuilder();
-        PixelReader pixelReader = image.getPixelReader();
         new Thread(() -> {
+            Image image = new Image(pictureList.get(pictureList.indexOf(pictureListView.getFocusModel().getFocusedItem())).toURI().toString());
+            PixelReader pixelReader = image.getPixelReader();
             for (int readY = 0; readY < height; readY++) {
                 for (int readX = 0; readX < width; readX++) {
                     if (readX < image.getWidth() && readY < image.getHeight() && pixelReader.getColor(readX, readY).getBrightness() >= brightness) {
