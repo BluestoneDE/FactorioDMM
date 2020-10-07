@@ -73,13 +73,8 @@ public class Controller {
         //calculate raw values from pixels without optimisation
         int[][] arrangement = new int[height][width];
         if (pictureList != null) {
-            int imageCount = 0;
-            for (File picture : pictureList) {
-                if (imageCount == 32) {
-                    continue;
-                }
-                System.out.println(imageCount + " : " + picture.getName());
-                Image image = new Image(picture.toURI().toString());
+            for (int imageCount = 0; imageCount < pictureList.size() && imageCount < 32; imageCount++) {
+                Image image = new Image(pictureList.get(imageCount).toURI().toString());
                 PixelReader pixelReader = image.getPixelReader();
                 for (int readY = 0; readY < height; readY++) {
                     for (int readX = 0; readX < width; readX++) {
@@ -88,7 +83,6 @@ public class Controller {
                         }
                     }
                 }
-                imageCount++;
             }
         }
 
