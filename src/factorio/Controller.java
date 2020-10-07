@@ -84,7 +84,7 @@ public class Controller {
                 PixelReader pixelReader = image.getPixelReader();
                 for (int readY = 0; readY < height; readY++) {
                     for (int readX = 0; readX < width; readX++) {
-                        if (pixelReader.getColor(readX, readY).getBrightness() >= brightness) {
+                        if (readX < image.getWidth() && readY < image.getHeight() && pixelReader.getColor(readX, readY).getBrightness() >= brightness) {
                             arrangement[readY][readX] = setBit(imageCount, arrangement[readY][readX]);
                         }
                     }
@@ -127,7 +127,7 @@ public class Controller {
         new Thread(() -> {
             for (int readY = 0; readY < height; readY++) {
                 for (int readX = 0; readX < width; readX++) {
-                    if (pixelReader.getColor(readX, readY).getBrightness() >= brightness) {
+                    if (readX < image.getWidth() && readY < image.getHeight() && pixelReader.getColor(readX, readY).getBrightness() >= brightness) {
                         previewText.append("░░");
                     } else {
                         previewText.append("██");
