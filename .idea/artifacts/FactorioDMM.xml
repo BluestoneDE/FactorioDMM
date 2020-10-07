@@ -3,7 +3,6 @@
     <output-path>$PROJECT_DIR$/out/artifacts/FactorioDMM</output-path>
     <root id="archive" name="FactorioDMM.jar">
       <element id="module-output" name="FactorioDMM" />
-      <element id="library" level="project" name="javafx-swt" />
     </root>
   </artifact>
 </component>
