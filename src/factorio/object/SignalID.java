@@ -4,6 +4,8 @@ public final class SignalID {
     public String name;
     public String type;
 
+    public SignalID() {}
+
     public SignalID(int pos) {
         if (pos < getVirtuals().length) {
             name = getVirtuals()[pos];
