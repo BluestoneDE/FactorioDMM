@@ -1,4 +1,4 @@
-package factorio;
+package factorio.object;
 
 public final class Signal {
     public static String get(int pos) {

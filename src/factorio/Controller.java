@@ -88,7 +88,8 @@ public class Controller {
 
         //optimize values into output
         int[][] outputArrangement = new int[height][width];
-        List<Integer> outputSignalValues = new ArrayList<>();
+        ArrayList<Integer> outputSignalValues = new ArrayList<>();
+        StringBuilder outputBlueprint = new StringBuilder();
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
                 if (outputSignalValues.contains(arrangement[row][column])) {
@@ -98,9 +99,11 @@ public class Controller {
                     outputArrangement[row][column] = outputSignalValues.size();
                 }
             }
-            System.out.println(Arrays.toString(outputArrangement[row]));
+            outputBlueprint.append(Arrays.toString(outputArrangement[row])).append("\n");
         }
-        System.out.println(outputSignalValues.size() + " : " + outputSignalValues);
+        outputBlueprint.append(outputSignalValues.size()).append(" ").append(outputSignalValues);
+        previewTextArea.setText(outputBlueprint.toString());
+        previewTextArea.setWrapText(true);
     }
 
     @FXML
@@ -128,6 +131,7 @@ public class Controller {
                 }
             }
         }).run();
+        previewTextArea.setWrapText(false);
         previewTextArea.setText(previewText.toString());
     }
 
