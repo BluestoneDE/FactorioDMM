@@ -1,22 +1,43 @@
 package factorio.object;
 
-public final class Signal {
-    public static String get(int pos) {
+public final class SignalID {
+    public String name;
+    public String type;
+
+    public SignalID(int pos) {
         if (pos < getVirtuals().length) {
-            return "\"type\":\"virtual\",\"name\":\"" + getVirtuals()[pos] + "\"";
+            name = getVirtuals()[pos];
+            type = "virtual";
         }
         pos -= getVirtuals().length;
         if (pos < getItems().length) {
-            return "\"type\":\"item\",\"name\":\"" + getItems()[pos] + "\"";
+            name = getItems()[pos];
+            type = "item";
         }
         pos -= getItems().length;
         if (pos < getFluids().length) {
-            return "\"type\":\"fluid\",\"name\":\"" + getFluids()[pos] + "\"";
+            name = getFluids()[pos];
+            type = "fluid";
         }
-        return null;
     }
 
-    public static String[] getFluids() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    private static String[] getFluids() {
         return new String[]{
                 "crude-oil",
                 "fluid-unknown",
@@ -30,7 +51,7 @@ public final class Signal {
         };
     }
 
-    public static String[] getVirtuals() {
+    private static String[] getVirtuals() {
         return new String[]{
                 "signal-0",
                 "signal-1",
@@ -74,7 +95,7 @@ public final class Signal {
         };
     }
 
-    public static String[] getItems() {
+    private static String[] getItems() {
         return new String[]{
                 "accumulator",
                 "advanced-circuit",
