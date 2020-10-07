@@ -1,20 +1,9 @@
 <component name="ArtifactManager">
-  <artifact type="javafx" name="FactorioDMM">
+  <artifact type="jar" name="FactorioDMM">
     <output-path>$PROJECT_DIR$/out/artifacts/FactorioDMM</output-path>
-    <properties id="javafx-properties">
-      <options>
-        <option name="appClass" value="factorio.Main" />
-        <option name="description" value="" />
-        <option name="htmlPlaceholderId" value="" />
-        <option name="title" value="" />
-        <option name="vendor" value="" />
-        <option name="version" value="" />
-      </options>
-    </properties>
-    <root id="root">
-      <element id="archive" name="FactorioDMM.jar">
-        <element id="module-output" name="FactorioDMM" />
-      </element>
+    <root id="archive" name="FactorioDMM.jar">
+      <element id="module-output" name="FactorioDMM" />
+      <element id="library" level="project" name="javafx-swt" />
     </root>
   </artifact>
 </component>
