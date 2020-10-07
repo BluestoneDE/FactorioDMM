@@ -63,7 +63,7 @@
                         <Insets left="5.0"/>
                     </GridPane.margin>
                     <font>
-                        <Font fx:id="previewFont" name="Comic Sans MS Bold" size="9.0"/>
+                        <Font name="Comic Sans MS Bold" size="9.0"/>
                     </font>
                 </TextArea>
                 <Slider fx:id="brightnessSlider" blockIncrement="1.0" disable="true" majorTickUnit="0.25" max="1.0"

@@ -1,6 +1,6 @@
 # Factorio Display Math Machine
 
-## About
+### About
 * This is a JavaFX Application
 * it converts a series of images into on/offsignal values
 * it outputs a Factorio Blueprint String
@@ -8,7 +8,7 @@
 
 ### ToDo
 * ~~Make Signal List~~
-* add input to change font in previewTextArea
+* generate Blueprint json (unencoded)
 * sucessfully output encoded Blueprint String
 
 ### Useful websites:

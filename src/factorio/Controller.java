@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
-import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -25,8 +24,6 @@ public class Controller {
     private ListView<File> pictureListView;
     @FXML
     private TextArea previewTextArea;
-    @FXML
-    private Font previewFont;
     @FXML
     private Label previewWidth;
     @FXML
@@ -54,15 +51,19 @@ public class Controller {
         List<File> list = fileChooser.showOpenMultipleDialog(pictureListView.getScene().getWindow());
         if (list != null) {
             pictureList.setAll(list);
+            if (mathButton.isDisabled()) {
+                mathButton.setDisable(false);
+                brightnessSlider.setDisable(false);
+                pictureListView.setOnMouseClicked(event -> updatePreview());
+                pictureListView.setOnKeyPressed(event -> updatePreview());
+            }
             Image image = new Image(pictureList.get(0).toURI().toString());
             width = (int) image.getWidth();
             height = (int) image.getHeight();
             brightness = 0.5;
+            brightnessSlider.setValue(brightness);
             previewWidth.setText("Width: " + width + "px");
             previewHeight.setText("Height: " + height + "px");
-            mathButton.setDisable(false);
-            brightnessSlider.setValue(brightness);
-            brightnessSlider.setDisable(false);
             updatePreview();
         }
     }
@@ -117,7 +118,7 @@ public class Controller {
     @FXML
     private void updatePreview() {
         brightness = brightnessSlider.getValue();
-        previewImage(new Image(pictureList.get(0).toURI().toString()));
+        previewImage(new Image(pictureList.get(pictureList.indexOf(pictureListView.getFocusModel().getFocusedItem())).toURI().toString()));
     }
 
     private void previewImage(Image image) {
