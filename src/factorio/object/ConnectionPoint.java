@@ -1,6 +1,6 @@
 package factorio.object;
 
-public class ConnectionPoint {
+public final class ConnectionPoint {
     public ConnectionData[] red;
     public ConnectionData[] green;
     

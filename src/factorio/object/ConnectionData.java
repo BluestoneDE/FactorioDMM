@@ -1,6 +1,6 @@
 package factorio.object;
 
-public class ConnectionData {
+public final class ConnectionData {
     public int entity_id;
     public int circuit_id;
 

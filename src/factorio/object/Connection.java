@@ -1,7 +1,11 @@
 package factorio.object;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Connection {
+    @SerializedName("1")
     public ConnectionPoint p1;
+    @SerializedName("2")
     public ConnectionPoint p2;
 
     public Connection() {}
