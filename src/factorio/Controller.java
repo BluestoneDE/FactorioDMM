@@ -75,12 +75,11 @@ public class Controller {
         if (pictureList != null) {
             int imageCount = 0;
             for (File picture : pictureList) {
-                Image image = new Image(picture.toURI().toString());
-                if (image.getWidth() != width && image.getHeight() != height) {
-                    System.out.println(picture.getName() + " was smaller than the initial resolution");
+                if (imageCount == 32) {
                     continue;
                 }
-                System.out.println("Working on " + picture.getName());
+                System.out.println(imageCount + " : " + picture.getName());
+                Image image = new Image(picture.toURI().toString());
                 PixelReader pixelReader = image.getPixelReader();
                 for (int readY = 0; readY < height; readY++) {
                     for (int readX = 0; readX < width; readX++) {
