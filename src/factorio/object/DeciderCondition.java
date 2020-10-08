@@ -1,6 +1,6 @@
 package factorio.object;
 
-public class DeciderCondition {
+public final class DeciderCondition {
     public SignalID first_signal;
     public SignalID second_signal;
     public int constant;

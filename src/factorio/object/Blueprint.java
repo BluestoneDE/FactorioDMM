@@ -3,7 +3,7 @@ package factorio.object;
 import java.util.ArrayList;
 
 public final class Blueprint {
-    public String item = "blueprint";
+    public final String item = "blueprint";
     public String label;
     public Entity[] entities;
     public Icon[] icons;
@@ -21,14 +21,6 @@ public final class Blueprint {
         this.entities = entities;
         this.icons = icons;
         this.version = version;
-    }
-
-    public String getItem() {
-        return item;
-    }
-
-    public void setItem(String item) {
-        this.item = item;
     }
 
     public String getLabel() {

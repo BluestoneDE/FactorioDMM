@@ -2027,7 +2027,7 @@
               "type": "virtual",
               "name": "signal-black"
             },
-            "operation": 10,
+            "second_constant": 10,
             "operation": "/",
             "output_signal": {
               "type": "virtual",
