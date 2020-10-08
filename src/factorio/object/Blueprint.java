@@ -1,7 +1,5 @@
 package factorio.object;
 
-import java.util.ArrayList;
-
 public final class Blueprint {
     public final String item = "blueprint";
     public String label;

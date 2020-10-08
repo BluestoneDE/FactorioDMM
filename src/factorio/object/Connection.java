@@ -19,19 +19,19 @@ public final class Connection {
         this.p2 = p2;
     }
 
-    public ConnectionPoint getP1() {
+    public ConnectionPoint get1() {
         return p1;
     }
 
-    public void setP1(ConnectionPoint p1) {
+    public void set1(ConnectionPoint p1) {
         this.p1 = p1;
     }
 
-    public ConnectionPoint getP2() {
+    public ConnectionPoint get2() {
         return p2;
     }
 
-    public void setP2(ConnectionPoint p2) {
+    public void set2(ConnectionPoint p2) {
         this.p2 = p2;
     }
 }

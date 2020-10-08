@@ -7,7 +7,7 @@ public final class Entity {
     public Position position;
     public int direction;
     public float orientation;
-    public Connection[] connections; //might be problematic, has to be serialized "1":{},"2":{}...
+    public Connection connections;
     public ControlBehaviour control_behaviour;
 
     public Entity() {
@@ -19,7 +19,7 @@ public final class Entity {
             Position position,
             int direction,
             float orientation,
-            Connection[] connections,
+            Connection connections,
             ControlBehaviour control_behaviour
     ) {
         this.entity_number = entity_count ++;
@@ -63,11 +63,11 @@ public final class Entity {
         this.orientation = orientation;
     }
 
-    public Connection[] getConnections() {
+    public Connection getConnections() {
         return connections;
     }
 
-    public void setConnections(Connection[] connections) {
+    public void setConnections(Connection connections) {
         this.connections = connections;
     }
 
