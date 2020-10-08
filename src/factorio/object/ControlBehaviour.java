@@ -8,15 +8,16 @@ public final class ControlBehaviour {
 
     public ControlBehaviour() {}
 
-    public ControlBehaviour(
-            boolean use_colors,
-            CircuitCondition circuit_condition,
-            ArithmeticCondition arithmetic_conditions,
-            DeciderCondition decider_conditions
-    ) {
+    public ControlBehaviour(boolean use_colors, CircuitCondition circuit_condition) {
         this.use_colors = use_colors;
         this.circuit_condition = circuit_condition;
+    }
+
+    public ControlBehaviour(ArithmeticCondition arithmetic_conditions) {
         this.arithmetic_conditions = arithmetic_conditions;
+    }
+
+    public ControlBehaviour(DeciderCondition decider_conditions) {
         this.decider_conditions = decider_conditions;
     }
 
