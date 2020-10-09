@@ -1,6 +1,7 @@
 package factorio;
 
 import com.google.gson.Gson;
+import factorio.encoders.BlueprintStringEncoder;
 import factorio.object.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -126,7 +127,7 @@ public class Controller {
                 },
                 73019621376L
         );
-        previewTextArea.setText("{\"blueprint\":" + new Gson().toJson(blueprint) + "}");
+                previewTextArea.setText(BlueprintStringEncoder.Encode(blueprint));
         previewTextArea.setFont(new javafx.scene.text.Font("Comic Sans MS BOLD", 18));
         previewTextArea.setWrapText(true);
     }

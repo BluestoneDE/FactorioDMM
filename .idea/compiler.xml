@@ -20,7 +20,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="FactorioDMM" target="1.9" />
+      <module name="FactorioDMM" target="10" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,7 +1,6 @@
 package factorio.encoders;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import factorio.object.Blueprint;
 import java.util.Base64;
 import java.util.zip.*;
@@ -22,16 +21,28 @@ public class BlueprintStringEncoder {
     }
 
     public BlueprintStringEncoder EncodeJson(){
-        GsonBuilder gb  = new GsonBuilder();
-        Gson g = gb.create();
-        _json = g.toJson(_blueprint);
+        _json = new Gson().toJson(_blueprint);
+        _json = "{\"blueprint\":" + _json + "}";
         return this;
     }
 
     private BlueprintStringEncoder Gzip(){
-        _deflater.setInput(_json.getBytes());
-        _compressedData = new byte[_deflater.getTotalOut()];
-        _deflater.deflate(_compressedData);
+        byte[] uncompressed = _json.getBytes();
+        int length;
+        byte[] oversized;
+        try{
+            _deflater.setInput(uncompressed);
+            _deflater.finish();
+            oversized = new byte[uncompressed.length];
+            length = _deflater.deflate(oversized);
+        }
+        finally {
+            _deflater.end();//Cleanup
+        }
+        _compressedData = new byte[length];
+        for(int i = 0; i < length; i++){
+            _compressedData[i] = oversized[i];
+        }
         return this;
     }
 
@@ -43,7 +54,7 @@ public class BlueprintStringEncoder {
 
     private String Finalize(){
         if(_bluePrintString == null) throw new IllegalStateException("Blueprint String was not Formed Properly");
-        return _bluePrintString;
+        return "0" + _bluePrintString;//Version 0 for factorio reasons
     }
 
     public static String Encode(Blueprint blueprintToEncode){
