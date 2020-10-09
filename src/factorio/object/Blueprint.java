@@ -7,7 +7,9 @@ public final class Blueprint {
     public Icon[] icons;
     public long version;
 
-    public Blueprint() {}
+    public Blueprint() {
+        Entity.resetEntityCount();
+    }
 
     public Blueprint(
             String label,
@@ -15,6 +17,7 @@ public final class Blueprint {
             Icon[] icons,
             long version
     ) {
+        Entity.resetEntityCount();
         this.label = label;
         this.entities = entities;
         this.icons = icons;

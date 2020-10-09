@@ -8,7 +8,7 @@ public final class Entity {
     public Integer direction;
     public Float orientation;
     public Connection connections;
-    public ControlBehaviour control_behaviour;
+    public ControlBehaviour control_behavior;
 
     public Entity() {
         entity_count ++;
@@ -21,7 +21,7 @@ public final class Entity {
             Integer direction,
             Float orientation,
             Connection connections,
-            ControlBehaviour control_behaviour
+            ControlBehaviour control_behavior
     ) {
         entity_count ++;
         this.entity_number = entity_count;
@@ -30,11 +30,15 @@ public final class Entity {
         this.direction = direction;
         this.orientation = orientation;
         this.connections = connections;
-        this.control_behaviour = control_behaviour;
+        this.control_behavior = control_behavior;
     }
 
     public static void resetEntityCount() {
         entity_count = 0;
+    }
+
+    public static int getEntity_count() {
+        return entity_count;
     }
 
     public String getName() {
@@ -77,11 +81,11 @@ public final class Entity {
         this.connections = connections;
     }
 
-    public ControlBehaviour getControlBehaviour() {
-        return control_behaviour;
+    public ControlBehaviour getControlBehavior() {
+        return control_behavior;
     }
 
-    public void setControlBehaviour(ControlBehaviour control_behaviour) {
-        this.control_behaviour = control_behaviour;
+    public void setControlBehavior(ControlBehaviour control_behaviour) {
+        this.control_behavior = control_behaviour;
     }
 }

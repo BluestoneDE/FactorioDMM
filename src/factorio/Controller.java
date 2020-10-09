@@ -1,6 +1,5 @@
 package factorio;
 
-import com.google.gson.Gson;
 import factorio.encoders.BlueprintStringEncoder;
 import factorio.object.*;
 import javafx.collections.FXCollections;
@@ -95,40 +94,49 @@ public class Controller {
         //optimize values into output
         StringBuilder outputBlueprint = new StringBuilder(); //todo remove this debug output
         int[][] outputArrangement = new int[height][width]; //todo remove this debug array
-        Entity.resetEntityCount();
         Entity[] entities = new Entity[width*height];
         ArrayList<Integer> outputSignalValues = new ArrayList<>();
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
+                CircuitCondition condition = new CircuitCondition();
+                if (outputSignalValues.contains(arrangement[row][column])) {
+                    condition.setFirstSignal(new SignalID(outputSignalValues.indexOf(arrangement[row][column])));
+                    outputArrangement[row][column] = outputSignalValues.indexOf(arrangement[row][column]) + 1;
+                } else if (arrangement[row][column] != 0) {
+                    outputSignalValues.add(arrangement[row][column]);
+                    condition.setFirstSignal(new SignalID(outputSignalValues.size()));
+                    outputArrangement[row][column] = outputSignalValues.size();
+                }
+                ConnectionData[] connections = new ConnectionData[] {
+                        //connect up
+                        row > 0 ? new ConnectionData(Entity.getEntity_count() - width + 1) : null,
+                        //connect left
+                        row == height - 1 && column > 0 ? new ConnectionData(Entity.getEntity_count()) : null,
+                        //connect right
+                        row == height - 1 && column < width - 1 ? new ConnectionData(Entity.getEntity_count() + 2) : null,
+                        //connect down
+                        row < height - 1 ? new ConnectionData(Entity.getEntity_count() + width + 1) : null
+                };
                 entities[row * width + column] = new Entity(
                         "small-lamp",
                         new Position(width / 2 - width + column + 1F, height / 2 - height + row + 1F),
                         null,
                         null,
-                        null,
-                        null
+                        new Connection(new ConnectionPoint(null, connections)),
+                        new ControlBehaviour(true, condition)
                 );
-                if (outputSignalValues.contains(arrangement[row][column])) {
-                    outputArrangement[row][column] = outputSignalValues.indexOf(arrangement[row][column]) + 1;
-                } else if (arrangement[row][column] != 0) {
-                    outputSignalValues.add(arrangement[row][column]);
-                    outputArrangement[row][column] = outputSignalValues.size();
-                }
             }
             outputBlueprint.append(Arrays.toString(outputArrangement[row])).append("\n");
         }
         outputBlueprint.append(outputSignalValues.size()).append(" ").append(outputSignalValues);
         //previewTextArea.setText(outputBlueprint.toString());
         Blueprint blueprint = new Blueprint(
-                "FactorioDMM output",
+                "FactorioDMM-output",
                 entities,
-                new Icon[] {
-                        new Icon(1, new SignalID("small-lamp"))
-                },
+                new Icon[] {new Icon(1, new SignalID("small-lamp"))},
                 73019621376L
         );
-                previewTextArea.setText(BlueprintStringEncoder.Encode(blueprint));
-        previewTextArea.setFont(new javafx.scene.text.Font("Comic Sans MS BOLD", 18));
+        previewTextArea.setText(BlueprintStringEncoder.Encode(blueprint));
         previewTextArea.setWrapText(true);
     }
 
@@ -158,7 +166,6 @@ public class Controller {
             }
         }).run();
         previewTextArea.setWrapText(false);
-        previewTextArea.setFont(new javafx.scene.text.Font("Comic Sans MS BOLD", 9));
         previewTextArea.setText(previewText.toString());
     }
 
