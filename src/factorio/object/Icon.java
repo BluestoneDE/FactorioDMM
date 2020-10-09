@@ -1,21 +1,21 @@
 package factorio.object;
 
 public final class Icon {
-    public int index;
+    public Integer index;
     public SignalID signal;
 
     public Icon() {}
 
-    public Icon(int index, SignalID signal) {
+    public Icon(Integer index, SignalID signal) {
         this.index = index;
         this.signal = signal;
     }
 
-    public int getIndex() {
+    public Integer getIndex() {
         return index;
     }
 
-    public void setIndex(int index) {
+    public void setIndex(Integer index) {
         this.index = index;
     }
 

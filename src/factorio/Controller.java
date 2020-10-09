@@ -1,9 +1,14 @@
 package factorio;
 
+import com.google.gson.Gson;
+import factorio.object.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.stage.FileChooser;
@@ -87,11 +92,21 @@ public class Controller {
         }
 
         //optimize values into output
-        int[][] outputArrangement = new int[height][width];
+        StringBuilder outputBlueprint = new StringBuilder(); //todo remove this debug output
+        int[][] outputArrangement = new int[height][width]; //todo remove this debug array
+        Entity.resetEntityCount();
+        Entity[] entities = new Entity[width*height];
         ArrayList<Integer> outputSignalValues = new ArrayList<>();
-        StringBuilder outputBlueprint = new StringBuilder();
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
+                entities[row * width + column] = new Entity(
+                        "small-lamp",
+                        new Position(width / 2 - width + column + 1F, height / 2 - height + row + 1F),
+                        null,
+                        null,
+                        null,
+                        null
+                );
                 if (outputSignalValues.contains(arrangement[row][column])) {
                     outputArrangement[row][column] = outputSignalValues.indexOf(arrangement[row][column]) + 1;
                 } else if (arrangement[row][column] != 0) {
@@ -102,7 +117,17 @@ public class Controller {
             outputBlueprint.append(Arrays.toString(outputArrangement[row])).append("\n");
         }
         outputBlueprint.append(outputSignalValues.size()).append(" ").append(outputSignalValues);
-        previewTextArea.setText(outputBlueprint.toString());
+        //previewTextArea.setText(outputBlueprint.toString());
+        Blueprint blueprint = new Blueprint(
+                "FactorioDMM output",
+                entities,
+                new Icon[] {
+                        new Icon(1, new SignalID("small-lamp"))
+                },
+                73019621376L
+        );
+        previewTextArea.setText("{\"blueprint\":" + new Gson().toJson(blueprint) + "}");
+        previewTextArea.setFont(new javafx.scene.text.Font("Comic Sans MS BOLD", 18));
         previewTextArea.setWrapText(true);
     }
 
@@ -132,6 +157,7 @@ public class Controller {
             }
         }).run();
         previewTextArea.setWrapText(false);
+        previewTextArea.setFont(new javafx.scene.text.Font("Comic Sans MS BOLD", 9));
         previewTextArea.setText(previewText.toString());
     }
 

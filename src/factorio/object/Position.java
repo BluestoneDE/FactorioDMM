@@ -1,29 +1,29 @@
 package factorio.object;
 
 public final class Position {
-    public float x;
-    public float y;
+    public Float x;
+    public Float y;
 
     public Position() {}
 
-    public Position(float x, float  y) {
+    public Position(Float x, Float  y) {
         this.x = x;
         this.y = y;
     }
 
-    public float getX() {
+    public Float getX() {
         return x;
     }
 
-    public void setX(float x) {
+    public void setX(Float x) {
         this.x = x;
     }
 
-    public float getY() {
+    public Float getY() {
         return y;
     }
 
-    public void setY(float y) {
+    public void setY(Float y) {
         this.y = y;
     }
 }
