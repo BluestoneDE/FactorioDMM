@@ -1,29 +1,29 @@
 package factorio.object;
 
 public final class ConnectionData {
-    public int entity_id;
-    public int circuit_id;
+    public Integer entity_id;
+    public Integer circuit_id;
 
     public ConnectionData() {}
 
-    public ConnectionData(int entity_id, int circuit_id) {
+    public ConnectionData(Integer entity_id, Integer circuit_id) {
         this.entity_id = entity_id;
         this.circuit_id = circuit_id;
     }
 
-    public int getEntity_id() {
+    public Integer getEntity_id() {
         return entity_id;
     }
 
-    public void setEntity_id(int entity_id) {
+    public void setEntity_id(Integer entity_id) {
         this.entity_id = entity_id;
     }
 
-    public int getCircuit_id() {
+    public Integer getCircuit_id() {
         return circuit_id;
     }
 
-    public void setCircuit_id(int circuit_id) {
+    public void setCircuit_id(Integer circuit_id) {
         this.circuit_id = circuit_id;
     }
 }
