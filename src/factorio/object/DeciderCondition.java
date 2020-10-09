@@ -3,7 +3,7 @@ package factorio.object;
 public final class DeciderCondition {
     public SignalID first_signal;
     public SignalID second_signal;
-    public int constant;
+    public Integer constant;
     public String comparator;
     public SignalID output_signal;
     public boolean copy_count_from_input;
@@ -26,7 +26,7 @@ public final class DeciderCondition {
 
     public DeciderCondition(
             SignalID first_signal,
-            int constant,
+            Integer constant,
             String comparator,
             SignalID output_signal,
             boolean copy_count_from_input
@@ -54,11 +54,11 @@ public final class DeciderCondition {
         this.second_signal = second_signal;
     }
 
-    public int getConstant() {
+    public Integer getConstant() {
         return constant;
     }
 
-    public void setConstant(int constant) {
+    public void setConstant(Integer constant) {
         this.constant = constant;
     }
 

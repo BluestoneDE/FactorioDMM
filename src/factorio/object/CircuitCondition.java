@@ -3,7 +3,7 @@ package factorio.object;
 public final class CircuitCondition {
     public SignalID first_signal;
     public SignalID second_signal;
-    public int constant;
+    public Integer constant;
     public String comparator;
 
     public CircuitCondition() {
@@ -15,7 +15,7 @@ public final class CircuitCondition {
         this.comparator = comparator;
     }
 
-    public CircuitCondition(SignalID first_signal, int constant, String comparator) {
+    public CircuitCondition(SignalID first_signal, Integer constant, String comparator) {
         this.first_signal = first_signal;
         this.constant = constant;
         this.comparator = comparator;
@@ -37,11 +37,11 @@ public final class CircuitCondition {
         this.second_signal = second_signal;
     }
 
-    public int getConstant() {
+    public Integer getConstant() {
         return constant;
     }
 
-    public void setConstant(int constant) {
+    public void setConstant(Integer constant) {
         this.constant = constant;
     }
 

@@ -2,9 +2,9 @@ package factorio.object;
 
 public final class ArithmeticCondition {
     public SignalID first_signal;
-    public int first_constant;
+    public Integer first_constant;
     public SignalID second_signal;
-    public int second_constant;
+    public Integer second_constant;
     public String operation;
     public SignalID output_signal;
 
@@ -17,21 +17,21 @@ public final class ArithmeticCondition {
         this.output_signal = output_signal;
     }
 
-    public ArithmeticCondition(SignalID first_signal, int second_constant, String operation, SignalID output_signal) {
+    public ArithmeticCondition(SignalID first_signal, Integer second_constant, String operation, SignalID output_signal) {
         this.first_signal = first_signal;
         this.second_constant = second_constant;
         this.operation = operation;
         this.output_signal = output_signal;
     }
 
-    public ArithmeticCondition(int first_constant, int second_constant, String operation, SignalID output_signal) {
+    public ArithmeticCondition(Integer first_constant, Integer second_constant, String operation, SignalID output_signal) {
         this.first_constant = first_constant;
         this.second_constant = second_constant;
         this.operation = operation;
         this.output_signal = output_signal;
     }
 
-    public ArithmeticCondition(int first_constant, SignalID second_signal, String operation, SignalID output_signal) {
+    public ArithmeticCondition(Integer first_constant, SignalID second_signal, String operation, SignalID output_signal) {
         this.first_constant = first_constant;
         this.second_signal = second_signal;
         this.operation = operation;
@@ -46,11 +46,11 @@ public final class ArithmeticCondition {
         this.first_signal = first_signal;
     }
 
-    public int getFirstConstant() {
+    public Integer getFirstConstant() {
         return first_constant;
     }
 
-    public void setFirstConstant(int first_constant) {
+    public void setFirstConstant(Integer first_constant) {
         this.first_constant = first_constant;
     }
 
@@ -62,11 +62,11 @@ public final class ArithmeticCondition {
         this.second_signal = second_signal;
     }
 
-    public int getSecondConstant() {
+    public Integer getSecondConstant() {
         return second_constant;
     }
 
-    public void setSecondConstant(int second_constant) {
+    public void setSecondConstant(Integer second_constant) {
         this.second_constant = second_constant;
     }
 

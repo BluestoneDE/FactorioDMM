@@ -5,30 +5,36 @@ public final class Entity {
     public final int entity_number;
     public String name;
     public Position position;
-    public int direction;
-    public float orientation;
+    public Integer direction;
+    public Float orientation;
     public Connection connections;
     public ControlBehaviour control_behaviour;
 
     public Entity() {
-        this.entity_number = entity_count ++;
+        entity_count ++;
+        this.entity_number = entity_count;
     }
 
     public Entity(
             String name,
             Position position,
-            int direction,
-            float orientation,
+            Integer direction,
+            Float orientation,
             Connection connections,
             ControlBehaviour control_behaviour
     ) {
-        this.entity_number = entity_count ++;
+        entity_count ++;
+        this.entity_number = entity_count;
         this.name = name;
         this.position = position;
         this.direction = direction;
         this.orientation = orientation;
         this.connections = connections;
         this.control_behaviour = control_behaviour;
+    }
+
+    public static void resetEntityCount() {
+        entity_count = 0;
     }
 
     public String getName() {
@@ -47,19 +53,19 @@ public final class Entity {
         this.position = position;
     }
 
-    public int getDirection() {
+    public Integer getDirection() {
         return direction;
     }
 
-    public void setDirection(int direction) {
+    public void setDirection(Integer direction) {
         this.direction = direction;
     }
 
-    public float getOrientation() {
+    public Float getOrientation() {
         return orientation;
     }
 
-    public void setOrientation(float orientation) {
+    public void setOrientation(Float orientation) {
         this.orientation = orientation;
     }
 
