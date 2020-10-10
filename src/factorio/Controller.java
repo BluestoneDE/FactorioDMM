@@ -15,7 +15,6 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Controller {
@@ -92,44 +91,82 @@ public class Controller {
         }
 
         //optimize values into output
-        StringBuilder outputBlueprint = new StringBuilder(); //todo remove this debug output
-        int[][] outputArrangement = new int[height][width]; //todo remove this debug array
-        Entity[] entities = new Entity[width*height];
-        ArrayList<Integer> outputSignalValues = new ArrayList<>();
+        ArrayList<Entity> entities = new ArrayList<>();
+        ArrayList<Integer> signalValues = new ArrayList<>();
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
                 CircuitCondition condition = new CircuitCondition();
-                if (outputSignalValues.contains(arrangement[row][column])) {
-                    condition.setFirstSignal(new SignalID(outputSignalValues.indexOf(arrangement[row][column])));
-                    outputArrangement[row][column] = outputSignalValues.indexOf(arrangement[row][column]) + 1;
+                if (signalValues.contains(arrangement[row][column])) {
+                    condition.setFirstSignal(new SignalID(signalValues.indexOf(arrangement[row][column])));
                 } else if (arrangement[row][column] != 0) {
-                    outputSignalValues.add(arrangement[row][column]);
-                    condition.setFirstSignal(new SignalID(outputSignalValues.size()));
-                    outputArrangement[row][column] = outputSignalValues.size();
+                    signalValues.add(arrangement[row][column]);
+                    condition.setFirstSignal(new SignalID(signalValues.size() - 1));
                 }
-                ConnectionData[] connections = new ConnectionData[] {
-                        //connect up
-                        row > 0 ? new ConnectionData(Entity.getEntity_count() - width + 1) : null,
-                        //connect left
-                        row == height - 1 && column > 0 ? new ConnectionData(Entity.getEntity_count()) : null,
-                        //connect right
-                        row == height - 1 && column < width - 1 ? new ConnectionData(Entity.getEntity_count() + 2) : null,
-                        //connect down
-                        row < height - 1 ? new ConnectionData(Entity.getEntity_count() + width + 1) : null
-                };
-                entities[row * width + column] = new Entity(
+                ArrayList<ConnectionData> connections = new ArrayList<>();
+                //connect up
+                if (row != 0) connections.add(new ConnectionData(Entity.getEntityCount() - width + 1, 1));
+                //connect left
+                if (row == height - 1 && column != 0) connections.add(new ConnectionData(Entity.getEntityCount(), 1));
+                entities.add(new Entity(
                         "small-lamp",
-                        new Position(width / 2 - width + column + 1F, height / 2 - height + row + 1F),
+                        new Position(width / 2 - width + column + 1F, -height + row * 1F),
                         null,
                         null,
-                        new Connection(new ConnectionPoint(null, connections)),
-                        new ControlBehaviour(true, condition)
-                );
+                        new ControlBehaviour(true, condition),
+                        new Connection(new ConnectionPoint(null, connections))
+                ));
             }
-            outputBlueprint.append(Arrays.toString(outputArrangement[row])).append("\n");
         }
-        outputBlueprint.append(outputSignalValues.size()).append(" ").append(outputSignalValues);
-        //previewTextArea.setText(outputBlueprint.toString());
+        entities.add(new Entity(
+                "constant-combinator",
+                new Position(-width / 2 + 2F, 0F),
+                4,
+                null,
+                new ControlBehaviour(new ArrayList<Filter>() {{
+                    add(new Filter(new SignalID("signal-black", "virtual"), 0, 1));
+                }}),
+                null
+        ));
+        entities.add(new Entity(
+                "arithmetic-combinator",
+                new Position(-width / 2 + 0.5F, 0F),
+                6,
+                null,
+                new ControlBehaviour(new ArithmeticCondition(
+                        new SignalID("signal-each", "virtual"),
+                        new SignalID("signal-black", "virtual"),
+                        "<<",
+                        new SignalID("signal-each", "virtual")
+                )),
+                new Connection(
+                        new ConnectionPoint(new ArrayList<ConnectionData>() {{
+                            add(new ConnectionData(Entity.getEntityCount() + 2));
+                        }}, new ArrayList<ConnectionData>() {{
+                            add(new ConnectionData(Entity.getEntityCount()));
+                        }}),
+                        new ConnectionPoint(null, new ArrayList<ConnectionData>() {{
+                            add(new ConnectionData(width * height - width + 1));
+                        }})
+                )
+        ));
+        for (int combinator = 0; combinator <= (signalValues.size() - 1) / 18; combinator++) {
+            ArrayList<Filter> filters = new ArrayList<>();
+            for (int signal = 0; signal < 18 && signal + combinator * 18 < signalValues.size(); signal++) {
+                filters.add(new Filter(new SignalID(combinator * 18 + signal), signalValues.get(combinator * 18 + signal), signal + 1));
+            }
+            entities.add(new Entity(
+                    "constant-combinator",
+                    new Position(-width / 2 + combinator * 1F, 1F),
+                    null,
+                    null,
+                    new ControlBehaviour(filters),
+                    new Connection(
+                            new ConnectionPoint(new ArrayList<ConnectionData>() {{
+                                add(new ConnectionData(Entity.getEntityCount()));
+                            }}, null)
+                    )
+            ));
+        }
         Blueprint blueprint = new Blueprint(
                 "FactorioDMM-output",
                 entities,

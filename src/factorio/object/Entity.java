@@ -7,8 +7,8 @@ public final class Entity {
     public Position position;
     public Integer direction;
     public Float orientation;
-    public Connection connections;
     public ControlBehaviour control_behavior;
+    public Connection connections;
 
     public Entity() {
         entity_count ++;
@@ -20,24 +20,24 @@ public final class Entity {
             Position position,
             Integer direction,
             Float orientation,
-            Connection connections,
-            ControlBehaviour control_behavior
-    ) {
+            ControlBehaviour control_behavior,
+            Connection connections
+            ) {
         entity_count ++;
         this.entity_number = entity_count;
         this.name = name;
         this.position = position;
         this.direction = direction;
         this.orientation = orientation;
-        this.connections = connections;
         this.control_behavior = control_behavior;
+        this.connections = connections;
     }
 
     public static void resetEntityCount() {
         entity_count = 0;
     }
 
-    public static int getEntity_count() {
+    public static int getEntityCount() {
         return entity_count;
     }
 

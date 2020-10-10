@@ -1,9 +1,11 @@
 package factorio.object;
 
+import java.util.ArrayList;
+
 public final class Blueprint {
     public final String item = "blueprint";
     public String label;
-    public Entity[] entities;
+    public ArrayList<Entity> entities;
     public Icon[] icons;
     public long version;
 
@@ -13,7 +15,7 @@ public final class Blueprint {
 
     public Blueprint(
             String label,
-            Entity[] entities,
+            ArrayList<Entity> entities,
             Icon[] icons,
             long version
     ) {
@@ -32,11 +34,11 @@ public final class Blueprint {
         this.label = label;
     }
 
-    public Entity[] getEntities() {
+    public ArrayList<Entity> getEntities() {
         return entities;
     }
 
-    public void setEntities(Entity[] entities) {
+    public void setEntities(ArrayList<Entity> entities) {
         this.entities = entities;
     }
 
