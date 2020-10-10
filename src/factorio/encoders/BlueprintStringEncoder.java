@@ -6,9 +6,9 @@ import java.util.Base64;
 import java.util.zip.*;
 
 public class BlueprintStringEncoder {
-    private Deflater _deflater;
-    private Base64.Encoder _Base64Encoder;
-    private Blueprint _blueprint;
+    private final Deflater _deflater;
+    private final Base64.Encoder _Base64Encoder;
+    private final Blueprint _blueprint;
     private String _json;
     private byte[] _compressedData;
     private String _bluePrintString;

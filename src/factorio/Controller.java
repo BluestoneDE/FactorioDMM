@@ -104,9 +104,9 @@ public class Controller {
                 }
                 ArrayList<ConnectionData> connections = new ArrayList<>();
                 //connect up
-                if (row != 0) connections.add(new ConnectionData(Entity.getEntityCount() - width + 1, 1));
+                if (row != 0) connections.add(new ConnectionData(Entity.getEntityCount() - width + 1));
                 //connect left
-                if (row == height - 1 && column != 0) connections.add(new ConnectionData(Entity.getEntityCount(), 1));
+                if (row == height - 1 && column != 0) connections.add(new ConnectionData(Entity.getEntityCount()));
                 entities.add(new Entity(
                         "small-lamp",
                         new Position(width / 2 - width + column + 1F, -height + row * 1F),
