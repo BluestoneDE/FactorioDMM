@@ -8,8 +8,15 @@
 
 ### ToDo
 * ~~Make Signal List~~
-* generate Blueprint json (unencoded)
-* sucessfully output encoded Blueprint String
+* ~~Generate Blueprint json (unencoded)~~
+* ~~Sucessfully output encoded Blueprint String~~
+
+### Ideas
+* Add more frames
+* Add more signals (segmenting)
+* Implement Colors (new technique)
+* Read GIF format
+* Read Video formats
 
 ### Useful websites:
 * https://wiki.factorio.com/Blueprint_string_format
