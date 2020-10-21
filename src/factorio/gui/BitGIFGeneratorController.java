@@ -1,4 +1,4 @@
-package factorio;
+package factorio.gui;
 
 import factorio.encoders.BlueprintStringEncoder;
 import factorio.object.*;
@@ -17,7 +17,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Controller {
+public class BitGIFGeneratorController {
 
     private ObservableList<File> pictureList;
     private int width;
@@ -109,7 +109,7 @@ public class Controller {
                 if (row == height - 1 && column != 0) connections.add(new ConnectionData(Entity.getEntityCount()));
                 entities.add(new Entity(
                         "small-lamp",
-                        new Position(width / 2 - width + column + 1F, -height + row * 1F),
+                        new Position(-width / 2 + column * 1F, -height + row * 1F),
                         null,
                         null,
                         new ControlBehaviour(true, condition),
