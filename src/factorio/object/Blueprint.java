@@ -1,22 +1,26 @@
 package factorio.object;
 
+import java.util.ArrayList;
+
 public final class Blueprint {
     public final String item = "blueprint";
     public String label;
-    public Entity[] entities;
+    public ArrayList<Entity> entities;
     public Icon[] icons;
     public long version;
 
-    public Blueprint() {}
+    public Blueprint() {
+    }
 
     public Blueprint(
             String label,
-            Entity[] entities,
+            ArrayList<Entity> entities,
             Icon[] icons,
             long version
     ) {
+        Entity.setEntityCount(entities.size());
         this.label = label;
-        this.entities = entities;
+        setEntities(entities);
         this.icons = icons;
         this.version = version;
     }
@@ -29,12 +33,24 @@ public final class Blueprint {
         this.label = label;
     }
 
-    public Entity[] getEntities() {
+    public ArrayList<Entity> getEntities() {
+        Entity.setEntityCount(entities.size());
         return entities;
     }
 
-    public void setEntities(Entity[] entities) {
-        this.entities = entities;
+    public void setEntities(ArrayList<Entity> entities) {
+        Entity.setEntityCount(0);
+        this.entities = new ArrayList<>();
+        for (Entity entity : entities) {
+            this.entities.add(new Entity(
+                    entity.getName(),
+                    entity.getPosition(),
+                    entity.getDirection(),
+                    entity.getOrientation(),
+                    entity.getControlBehavior(),
+                    entity.getConnections()
+            ));
+        }
     }
 
     public Icon[] getIcons() {

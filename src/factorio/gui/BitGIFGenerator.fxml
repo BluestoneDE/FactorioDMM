@@ -7,7 +7,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             style="-fx-background-color: #444;" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="factorio.Controller">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="factorio.gui.BitGIFGeneratorController">
     <children>
         <Label alignment="CENTER" text="Factorio Display Math Machine" textFill="WHITE" AnchorPane.leftAnchor="10.0"
                AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">

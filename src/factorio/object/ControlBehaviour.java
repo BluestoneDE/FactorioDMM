@@ -1,10 +1,13 @@
 package factorio.object;
 
+import java.util.ArrayList;
+
 public final class ControlBehaviour {
     public boolean use_colors;
     public CircuitCondition circuit_condition;
     public ArithmeticCondition arithmetic_conditions;
     public DeciderCondition decider_conditions;
+    public ArrayList<Filter> filters;
 
     public ControlBehaviour() {}
 
@@ -19,6 +22,10 @@ public final class ControlBehaviour {
 
     public ControlBehaviour(DeciderCondition decider_conditions) {
         this.decider_conditions = decider_conditions;
+    }
+
+    public ControlBehaviour(ArrayList<Filter> filters) {
+        this.filters = filters;
     }
 
     public boolean isUseColors() {
@@ -51,5 +58,13 @@ public final class ControlBehaviour {
 
     public void setDeciderConditions(DeciderCondition decider_conditions) {
         this.decider_conditions = decider_conditions;
+    }
+
+    public ArrayList<Filter> getFilters() {
+        return filters;
+    }
+
+    public void setFilters(ArrayList<Filter> filters) {
+        this.filters = filters;
     }
 }

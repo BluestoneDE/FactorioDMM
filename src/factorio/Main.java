@@ -9,7 +9,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("interface.fxml")), 764, 541));
+        primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("gui/BitGIFGenerator.fxml")), 764, 541));
         primaryStage.setTitle("Factorio Display Math Machine");
         primaryStage.setMinWidth(400);
         primaryStage.setMinHeight(360);

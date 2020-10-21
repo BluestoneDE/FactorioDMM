@@ -40,6 +40,11 @@ public final class SignalID {
         }
     }
 
+    public SignalID(String name, String type) {
+        this.name = name;
+        this.type = type;
+    }
+
     public String getName() {
         return name;
     }
@@ -125,7 +130,6 @@ public final class SignalID {
             "belt-immunity-equipment",
             "big-electric-pole",
             "boiler",
-            "burner-generator",
             "burner-inserter",
             "burner-mining-drill",
             "centrifuge",
@@ -192,7 +196,6 @@ public final class SignalID {
             "iron-ore",
             "iron-plate",
             "iron-stick",
-            "item-unknown",
             "lab",
             "land-mine",
             "landfill",

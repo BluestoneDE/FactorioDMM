@@ -1,6 +1,5 @@
-package factorio;
+package factorio.gui;
 
-import com.google.gson.Gson;
 import factorio.encoders.BlueprintStringEncoder;
 import factorio.object.*;
 import javafx.collections.FXCollections;
@@ -16,10 +15,9 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class Controller {
+public class BitGIFGeneratorController {
 
     private ObservableList<File> pictureList;
     private int width;
@@ -93,42 +91,89 @@ public class Controller {
         }
 
         //optimize values into output
-        StringBuilder outputBlueprint = new StringBuilder(); //todo remove this debug output
-        int[][] outputArrangement = new int[height][width]; //todo remove this debug array
-        Entity.resetEntityCount();
-        Entity[] entities = new Entity[width*height];
-        ArrayList<Integer> outputSignalValues = new ArrayList<>();
+        ArrayList<Entity> entities = new ArrayList<>();
+        ArrayList<Integer> signalValues = new ArrayList<>();
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
-                entities[row * width + column] = new Entity(
-                        "small-lamp",
-                        new Position(width / 2 - width + column + 1F, height / 2 - height + row + 1F),
-                        null,
-                        null,
-                        null,
-                        null
-                );
-                if (outputSignalValues.contains(arrangement[row][column])) {
-                    outputArrangement[row][column] = outputSignalValues.indexOf(arrangement[row][column]) + 1;
+                CircuitCondition condition = new CircuitCondition();
+                if (signalValues.contains(arrangement[row][column])) {
+                    condition.setFirstSignal(new SignalID(signalValues.indexOf(arrangement[row][column])));
                 } else if (arrangement[row][column] != 0) {
-                    outputSignalValues.add(arrangement[row][column]);
-                    outputArrangement[row][column] = outputSignalValues.size();
+                    signalValues.add(arrangement[row][column]);
+                    condition.setFirstSignal(new SignalID(signalValues.size() - 1));
                 }
+                ArrayList<ConnectionData> connections = new ArrayList<>();
+                //connect up
+                if (row != 0) connections.add(new ConnectionData(Entity.getEntityCount() - width + 1));
+                //connect left
+                if (row == height - 1 && column != 0) connections.add(new ConnectionData(Entity.getEntityCount()));
+                entities.add(new Entity(
+                        "small-lamp",
+                        new Position(-width / 2 + column * 1F, -height + row * 1F),
+                        null,
+                        null,
+                        new ControlBehaviour(true, condition),
+                        new Connection(new ConnectionPoint(null, connections))
+                ));
             }
-            outputBlueprint.append(Arrays.toString(outputArrangement[row])).append("\n");
         }
-        outputBlueprint.append(outputSignalValues.size()).append(" ").append(outputSignalValues);
-        //previewTextArea.setText(outputBlueprint.toString());
+        entities.add(new Entity(
+                "constant-combinator",
+                new Position(-width / 2 + 2F, 0F),
+                4,
+                null,
+                new ControlBehaviour(new ArrayList<Filter>() {{
+                    add(new Filter(new SignalID("signal-black", "virtual"), 0, 1));
+                }}),
+                null
+        ));
+        entities.add(new Entity(
+                "arithmetic-combinator",
+                new Position(-width / 2 + 0.5F, 0F),
+                6,
+                null,
+                new ControlBehaviour(new ArithmeticCondition(
+                        new SignalID("signal-each", "virtual"),
+                        new SignalID("signal-black", "virtual"),
+                        "<<",
+                        new SignalID("signal-each", "virtual")
+                )),
+                new Connection(
+                        new ConnectionPoint(new ArrayList<ConnectionData>() {{
+                            add(new ConnectionData(Entity.getEntityCount() + 2));
+                        }}, new ArrayList<ConnectionData>() {{
+                            add(new ConnectionData(Entity.getEntityCount()));
+                        }}),
+                        new ConnectionPoint(null, new ArrayList<ConnectionData>() {{
+                            add(new ConnectionData(width * height - width + 1));
+                        }})
+                )
+        ));
+        for (int combinator = 0; combinator <= (signalValues.size() - 1) / 18; combinator++) {
+            ArrayList<Filter> filters = new ArrayList<>();
+            for (int signal = 0; signal < 18 && signal + combinator * 18 < signalValues.size(); signal++) {
+                filters.add(new Filter(new SignalID(combinator * 18 + signal), signalValues.get(combinator * 18 + signal), signal + 1));
+            }
+            entities.add(new Entity(
+                    "constant-combinator",
+                    new Position(-width / 2 + combinator * 1F, 1F),
+                    null,
+                    null,
+                    new ControlBehaviour(filters),
+                    new Connection(
+                            new ConnectionPoint(new ArrayList<ConnectionData>() {{
+                                add(new ConnectionData(Entity.getEntityCount()));
+                            }}, null)
+                    )
+            ));
+        }
         Blueprint blueprint = new Blueprint(
-                "FactorioDMM output",
+                "FactorioDMM-output",
                 entities,
-                new Icon[] {
-                        new Icon(1, new SignalID("small-lamp"))
-                },
+                new Icon[] {new Icon(1, new SignalID("small-lamp"))},
                 73019621376L
         );
-                previewTextArea.setText(BlueprintStringEncoder.Encode(blueprint));
-        previewTextArea.setFont(new javafx.scene.text.Font("Comic Sans MS BOLD", 18));
+        previewTextArea.setText(BlueprintStringEncoder.Encode(blueprint));
         previewTextArea.setWrapText(true);
     }
 
@@ -158,7 +203,6 @@ public class Controller {
             }
         }).run();
         previewTextArea.setWrapText(false);
-        previewTextArea.setFont(new javafx.scene.text.Font("Comic Sans MS BOLD", 9));
         previewTextArea.setText(previewText.toString());
     }
 

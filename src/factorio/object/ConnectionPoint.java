@@ -1,30 +1,32 @@
 package factorio.object;
 
+import java.util.ArrayList;
+
 public final class ConnectionPoint {
-    public ConnectionData[] red;
-    public ConnectionData[] green;
+    public ArrayList<ConnectionData> red;
+    public ArrayList<ConnectionData> green;
     
     public ConnectionPoint() {}
     
-    public ConnectionPoint(ConnectionData[] red, ConnectionData[] green) {
+    public ConnectionPoint(ArrayList<ConnectionData> red, ArrayList<ConnectionData> green) {
         this.red = red;
         this.green = green;
     }
 
-    public ConnectionData[] getRed() {
+    public ArrayList<ConnectionData> getRed() {
         return red;
     }
 
-    public ConnectionPoint setRed(ConnectionData[] red) {
+    public ConnectionPoint setRed(ArrayList<ConnectionData> red) {
         this.red = red;
         return this;
     }
 
-    public ConnectionData[] getGreen() {
+    public ArrayList<ConnectionData> getGreen() {
         return green;
     }
 
-    public ConnectionPoint setGreen(ConnectionData[] green) {
+    public ConnectionPoint setGreen(ArrayList<ConnectionData> green) {
         this.green = green;
         return this;
     }
