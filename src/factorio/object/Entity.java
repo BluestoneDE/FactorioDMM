@@ -33,8 +33,8 @@ public final class Entity {
         this.connections = connections;
     }
 
-    public static void resetEntityCount() {
-        entity_count = 0;
+    public static void setEntityCount(int entity_count) {
+        Entity.entity_count = entity_count;
     }
 
     public static int getEntityCount() {

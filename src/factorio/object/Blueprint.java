@@ -10,7 +10,6 @@ public final class Blueprint {
     public long version;
 
     public Blueprint() {
-        Entity.resetEntityCount();
     }
 
     public Blueprint(
@@ -19,9 +18,9 @@ public final class Blueprint {
             Icon[] icons,
             long version
     ) {
-        Entity.resetEntityCount();
+        Entity.setEntityCount(entities.size());
         this.label = label;
-        this.entities = entities;
+        setEntities(entities);
         this.icons = icons;
         this.version = version;
     }
@@ -35,11 +34,23 @@ public final class Blueprint {
     }
 
     public ArrayList<Entity> getEntities() {
+        Entity.setEntityCount(entities.size());
         return entities;
     }
 
     public void setEntities(ArrayList<Entity> entities) {
-        this.entities = entities;
+        Entity.setEntityCount(0);
+        this.entities = new ArrayList<>();
+        for (Entity entity : entities) {
+            this.entities.add(new Entity(
+                    entity.getName(),
+                    entity.getPosition(),
+                    entity.getDirection(),
+                    entity.getOrientation(),
+                    entity.getControlBehavior(),
+                    entity.getConnections()
+            ));
+        }
     }
 
     public Icon[] getIcons() {

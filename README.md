@@ -8,8 +8,10 @@
 
 ### ToDo
 * ~~Make Signal List~~
-* ~~Generate Blueprint json (unencoded)~~
 * ~~Sucessfully output encoded Blueprint String~~
+* Add ViewManager
+* Add other generation method (requires ViewManager)
+* GUI redesign
 
 ### Ideas
 * Add more frames
