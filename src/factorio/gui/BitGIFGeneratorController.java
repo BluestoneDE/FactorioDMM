@@ -113,7 +113,7 @@ public class BitGIFGeneratorController {
                         null,
                         null,
                         new ControlBehaviour(true, condition),
-                        new Connection(new ConnectionPoint(null, connections))
+                        connections.size() > 0 ? new Connection(new ConnectionPoint(null, connections)) : null
                 ));
             }
         }
@@ -139,12 +139,12 @@ public class BitGIFGeneratorController {
                         new SignalID("signal-each")
                 )),
                 new Connection(
-                        new ConnectionPoint(new ArrayList<ConnectionData>() {{
+                        new ConnectionPoint(new ArrayList<>() {{
                             add(new ConnectionData(Entity.getEntityCount() + 2));
-                        }}, new ArrayList<ConnectionData>() {{
+                        }}, new ArrayList<>() {{
                             add(new ConnectionData(Entity.getEntityCount()));
                         }}),
-                        new ConnectionPoint(null, new ArrayList<ConnectionData>() {{
+                        new ConnectionPoint(null, new ArrayList<>() {{
                             add(new ConnectionData(width * height - width + 1));
                         }})
                 )
@@ -161,7 +161,7 @@ public class BitGIFGeneratorController {
                     null,
                     new ControlBehaviour(filters),
                     new Connection(
-                            new ConnectionPoint(new ArrayList<ConnectionData>() {{
+                            new ConnectionPoint(new ArrayList<>() {{
                                 add(new ConnectionData(Entity.getEntityCount()));
                             }}, null)
                     )
