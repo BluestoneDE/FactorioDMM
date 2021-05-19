@@ -113,7 +113,7 @@ public class BitGIFGeneratorController {
                         null,
                         null,
                         new ControlBehaviour(true, condition),
-                        new Connection(new ConnectionPoint(null, connections))
+                        connections.size() > 0 ? new Connection(new ConnectionPoint(null, connections)) : null
                 ));
             }
         }
@@ -123,7 +123,7 @@ public class BitGIFGeneratorController {
                 4,
                 null,
                 new ControlBehaviour(new ArrayList<Filter>() {{
-                    add(new Filter(new SignalID("signal-black", "virtual"), 0, 1));
+                    add(new Filter(new SignalID("signal-black"), 0, 1));
                 }}),
                 null
         ));
@@ -133,26 +133,26 @@ public class BitGIFGeneratorController {
                 6,
                 null,
                 new ControlBehaviour(new ArithmeticCondition(
-                        new SignalID("signal-each", "virtual"),
-                        new SignalID("signal-black", "virtual"),
+                        new SignalID("signal-each"),
+                        new SignalID("signal-black"),
                         "<<",
-                        new SignalID("signal-each", "virtual")
+                        new SignalID("signal-each")
                 )),
                 new Connection(
-                        new ConnectionPoint(new ArrayList<ConnectionData>() {{
+                        new ConnectionPoint(new ArrayList<>() {{
                             add(new ConnectionData(Entity.getEntityCount() + 2));
-                        }}, new ArrayList<ConnectionData>() {{
+                        }}, new ArrayList<>() {{
                             add(new ConnectionData(Entity.getEntityCount()));
                         }}),
-                        new ConnectionPoint(null, new ArrayList<ConnectionData>() {{
+                        new ConnectionPoint(null, new ArrayList<>() {{
                             add(new ConnectionData(width * height - width + 1));
                         }})
                 )
         ));
-        for (int combinator = 0; combinator <= (signalValues.size() - 1) / 18; combinator++) {
+        for (int combinator = 0; combinator <= (signalValues.size() - 1) / 20; combinator++) {
             ArrayList<Filter> filters = new ArrayList<>();
-            for (int signal = 0; signal < 18 && signal + combinator * 18 < signalValues.size(); signal++) {
-                filters.add(new Filter(new SignalID(combinator * 18 + signal), signalValues.get(combinator * 18 + signal), signal + 1));
+            for (int signal = 0; signal < 20 && signal + combinator * 20 < signalValues.size(); signal++) {
+                filters.add(new Filter(new SignalID(combinator * 20 + signal), signalValues.get(combinator * 20 + signal), signal + 1));
             }
             entities.add(new Entity(
                     "constant-combinator",
@@ -161,7 +161,7 @@ public class BitGIFGeneratorController {
                     null,
                     new ControlBehaviour(filters),
                     new Connection(
-                            new ConnectionPoint(new ArrayList<ConnectionData>() {{
+                            new ConnectionPoint(new ArrayList<>() {{
                                 add(new ConnectionData(Entity.getEntityCount()));
                             }}, null)
                     )
@@ -171,7 +171,7 @@ public class BitGIFGeneratorController {
                 "FactorioDMM-output",
                 entities,
                 new Icon[] {new Icon(1, new SignalID("small-lamp"))},
-                73019621376L
+                281479271743489L
         );
         previewTextArea.setText(BlueprintStringEncoder.Encode(blueprint));
         previewTextArea.setWrapText(true);

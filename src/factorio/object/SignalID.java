@@ -28,13 +28,13 @@ public final class SignalID {
     }
 
     public SignalID(String name) {
-        if (Arrays.asList(virtuals).indexOf(name) > 0) {
+        if (Arrays.asList(virtuals).contains(name) || Arrays.asList(extraVirtuals).contains(name)) {
             this.name = name;
             this.type = "virtual";
-        } else if (Arrays.asList(items).indexOf(name) > 0) {
+        } else if (Arrays.asList(items).contains(name)) {
             this.name = name;
             this.type = "item";
-        } else if (Arrays.asList(fluids).indexOf(name) > 0) {
+        } else if (Arrays.asList(fluids).contains(name)) {
             this.name = name;
             this.type = "fluid";
         }
@@ -71,6 +71,21 @@ public final class SignalID {
             "steam",
             "sulfuric-acid",
             "water",
+    };
+
+    private static final String[] extraVirtuals = new String[]{
+            "signal-anything",
+            "signal-black",
+            "signal-blue",
+            "signal-cyan",
+            "signal-each",
+            "signal-everything",
+            "signal-green",
+            "signal-grey",
+            "signal-pink",
+            "signal-red",
+            "signal-white",
+            "signal-yellow",
     };
 
     private static final String[] virtuals = new String[]{
@@ -136,23 +151,12 @@ public final class SignalID {
             "chemical-plant",
             "coal",
             "coin",
-            "computer",
             "concrete",
             "constant-combinator",
             "construction-robot",
             "copper-cable",
             "copper-ore",
             "copper-plate",
-            "crash-site-assembling-machine-1-broken",
-            "crash-site-assembling-machine-1-repaired",
-            "crash-site-assembling-machine-2-broken",
-            "crash-site-assembling-machine-2-repaired",
-            "crash-site-chest-1",
-            "crash-site-chest-2",
-            "crash-site-electric-pole",
-            "crash-site-generator",
-            "crash-site-lab-broken",
-            "crash-site-lab-repaired",
             "crude-oil-barrel",
             "decider-combinator",
             "discharge-defense-equipment",
@@ -246,7 +250,6 @@ public final class SignalID {
             "simple-entity-with-owner",
             "small-electric-pole",
             "small-lamp",
-            "small-plane",
             "solar-panel",
             "solar-panel-equipment",
             "solid-fuel",
