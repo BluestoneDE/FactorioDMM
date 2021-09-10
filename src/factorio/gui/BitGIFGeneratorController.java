@@ -11,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -23,6 +25,8 @@ public class BitGIFGeneratorController {
     private int width;
     private int height;
     private double brightness;
+    private double fontSize = 9.0;
+    private boolean copyMode = false;
 
     @FXML
     private ListView<File> pictureListView;
@@ -173,17 +177,23 @@ public class BitGIFGeneratorController {
                 new Icon[] {new Icon(1, new SignalID("small-lamp"))},
                 281479271743489L
         );
+        previewTextArea.setFont(Font.font("Comic Sans MS Bold", 9.0));
         previewTextArea.setText(BlueprintStringEncoder.Encode(blueprint));
         previewTextArea.setWrapText(true);
+        copyMode = true;
     }
 
     @FXML
     private void selectAll() {
-        previewTextArea.selectAll();
+        if (copyMode) {
+            previewTextArea.selectAll();
+            previewTextArea.copy();
+        }
     }
 
     @FXML
     private void updatePreview() {
+        copyMode = false;
         brightness = brightnessSlider.getValue();
         StringBuilder previewText = new StringBuilder();
         new Thread(() -> {
@@ -192,9 +202,9 @@ public class BitGIFGeneratorController {
             for (int readY = 0; readY < height; readY++) {
                 for (int readX = 0; readX < width; readX++) {
                     if (readX < image.getWidth() && readY < image.getHeight() && pixelReader.getColor(readX, readY).getBrightness() >= brightness) {
-                        previewText.append("░░");
+                        previewText.append("██ ");
                     } else {
-                        previewText.append("██");
+                        previewText.append("░░ ");
                     }
                 }
                 if (readY < height - 1) {
@@ -202,8 +212,24 @@ public class BitGIFGeneratorController {
                 }
             }
         }).run();
+        previewTextArea.setFont(Font.font("Comic Sans MS Bold", fontSize));
         previewTextArea.setWrapText(false);
         previewTextArea.setText(previewText.toString());
+    }
+
+    @FXML
+    private void zoom(ScrollEvent scrollEvent) {
+        if (copyMode) {
+            return;
+        }
+        if (scrollEvent.getDeltaY() < 0 && fontSize < 70.0) {
+            fontSize += Math.ceil(fontSize) / 10.0;
+            previewTextArea.setFont(Font.font("Comic Sans MS Bold", fontSize));
+        } else if (scrollEvent.getDeltaY() > 0 && fontSize > 0.6) {
+            fontSize -= Math.ceil(fontSize) / 10.0;
+            previewTextArea.setFont(Font.font("Comic Sans MS Bold", fontSize));
+        }
+        previewTextArea.setScrollTop(0);
     }
 
     private static int setBit(int bit, int target) {
