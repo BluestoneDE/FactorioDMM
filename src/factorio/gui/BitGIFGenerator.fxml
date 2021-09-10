@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             style="-fx-background-color: #444;" xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="factorio.gui.BitGIFGeneratorController">
@@ -37,8 +38,7 @@
             </font>
         </Button>
         <ListView fx:id="pictureListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                  nodeOrientation="RIGHT_TO_LEFT" GridPane.rowIndex="1"
-                  style="-fx-control-inner-background: #111;">
+                  nodeOrientation="RIGHT_TO_LEFT" style="-fx-control-inner-background: #111;" GridPane.rowIndex="1">
             <GridPane.margin>
                 <Insets bottom="5.0" right="5.0" top="5.0"/>
             </GridPane.margin>
@@ -54,9 +54,9 @@
             </font>
         </Label>
         <TextArea fx:id="previewTextArea" editable="false" maxHeight="1.7976931348623157E308"
-                  maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#selectAll"
-                  onScroll="#zoom" GridPane.columnIndex="1" GridPane.rowSpan="6"
-                  style="-fx-control-inner-background: #111;">
+                  maxWidth="1.7976931348623157E308" prefWidth="360.0" nodeOrientation="LEFT_TO_RIGHT"
+                  onMouseClicked="#selectAll" onScroll="#zoom" style="-fx-control-inner-background: #111;"
+                  GridPane.columnIndex="1" GridPane.rowSpan="6">
             <GridPane.margin>
                 <Insets left="5.0"/>
             </GridPane.margin>
@@ -71,9 +71,8 @@
                 <Insets right="5.0"/>
             </GridPane.margin>
         </Slider>
-        <Button fx:id="mathButton" disable="true" maxHeight="1.7976931348623157E308"
-                maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#math" text="do math"
-                GridPane.rowIndex="5">
+        <Button fx:id="mathButton" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                mnemonicParsing="false" onAction="#math" text="do math" GridPane.rowIndex="5">
             <GridPane.margin>
                 <Insets right="5.0" top="5.0"/>
             </GridPane.margin>
