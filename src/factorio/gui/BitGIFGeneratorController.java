@@ -6,9 +6,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.input.ScrollEvent;
@@ -96,6 +93,7 @@ public class BitGIFGeneratorController {
         }
 
         //optimize values into output
+        Entity.setEntityCount(0);
         ArrayList<Entity> entities = new ArrayList<>();
         ArrayList<Integer> signalValues = new ArrayList<>();
         for (int row = 0; row < height; row++) {
@@ -127,7 +125,7 @@ public class BitGIFGeneratorController {
                 new Position(-width / 2 + 2F, 0F),
                 4,
                 null,
-                new ControlBehaviour(new ArrayList<Filter>() {{
+                new ControlBehaviour(new ArrayList<>() {{
                     add(new Filter(new SignalID("signal-black"), 0, 1));
                 }}),
                 null
@@ -175,7 +173,7 @@ public class BitGIFGeneratorController {
         Blueprint blueprint = new Blueprint(
                 "FactorioDMM-output",
                 entities,
-                new Icon[] {new Icon(1, new SignalID("small-lamp"))},
+                new Icon[]{new Icon(1, new SignalID("small-lamp"))},
                 281479271743489L
         );
         previewTextArea.setFont(Font.font("Comic Sans MS Bold", 9.0));

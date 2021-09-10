@@ -18,7 +18,6 @@ public final class Blueprint {
             Icon[] icons,
             long version
     ) {
-        Entity.setEntityCount(entities.size());
         this.label = label;
         setEntities(entities);
         this.icons = icons;
@@ -34,7 +33,6 @@ public final class Blueprint {
     }
 
     public ArrayList<Entity> getEntities() {
-        Entity.setEntityCount(entities.size());
         return entities;
     }
 
