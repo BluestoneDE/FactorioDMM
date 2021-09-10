@@ -25,7 +25,7 @@ public class BitGIFGeneratorController {
     private int width;
     private int height;
     private double brightness;
-    private double fontSize = 9.0;
+    private double fontSize;
     private boolean copyMode = false;
 
     @FXML
@@ -72,6 +72,7 @@ public class BitGIFGeneratorController {
             brightnessSlider.setValue(brightness);
             previewWidth.setText("Width: " + width + "px");
             previewHeight.setText("Height: " + height + "px");
+            fontSize = 9.0;
             updatePreview();
         }
     }
