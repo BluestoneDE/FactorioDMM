@@ -126,7 +126,7 @@ public class BitGIFGeneratorController {
                 new Position(-width / 2 + 2F, 0F),
                 4,
                 null,
-                new ControlBehaviour(new ArrayList<>() {{
+                new ControlBehaviour(new ArrayList<Filter>() {{
                     add(new Filter(new SignalID("signal-black"), 0, 1));
                 }}),
                 null
@@ -143,12 +143,12 @@ public class BitGIFGeneratorController {
                         new SignalID("signal-each")
                 )),
                 new Connection(
-                        new ConnectionPoint(new ArrayList<>() {{
+                        new ConnectionPoint(new ArrayList<ConnectionData>() {{
                             add(new ConnectionData(Entity.getEntityCount() + 2));
-                        }}, new ArrayList<>() {{
+                        }}, new ArrayList<ConnectionData>() {{
                             add(new ConnectionData(Entity.getEntityCount()));
                         }}),
-                        new ConnectionPoint(null, new ArrayList<>() {{
+                        new ConnectionPoint(null, new ArrayList<ConnectionData>() {{
                             add(new ConnectionData(width * height - width + 1));
                         }})
                 )
@@ -165,7 +165,7 @@ public class BitGIFGeneratorController {
                     null,
                     new ControlBehaviour(filters),
                     new Connection(
-                            new ConnectionPoint(new ArrayList<>() {{
+                            new ConnectionPoint(new ArrayList<ConnectionData>() {{
                                 add(new ConnectionData(Entity.getEntityCount()));
                             }}, null)
                     )
