@@ -61,7 +61,7 @@ public class BitGIFGeneratorController {
                 mathButton.setDisable(false);
                 brightnessSlider.setDisable(false);
                 pictureListView.setOnMouseClicked(event -> updatePreview());
-                pictureListView.setOnKeyPressed(event -> updatePreview());
+                pictureListView.setOnKeyReleased(event -> updatePreview());
             }
             Image image = new Image(pictureList.get(0).toURI().toString());
             width = (int) image.getWidth();
@@ -71,6 +71,7 @@ public class BitGIFGeneratorController {
             previewWidth.setText("Width: " + width + "px");
             previewHeight.setText("Height: " + height + "px");
             fontSize = 9.0;
+            pictureListView.getFocusModel().focus(0);
             updatePreview();
         }
     }
