@@ -24,6 +24,7 @@ public class BitGIFGeneratorController {
     private double brightness;
     private double fontSize;
     private boolean copyMode = false;
+    private boolean optimizeSignals = true;
 
     @FXML
     private ListView<File> pictureListView;
@@ -99,9 +100,9 @@ public class BitGIFGeneratorController {
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
                 CircuitCondition condition = new CircuitCondition();
-                if (signalValues.contains(arrangement[row][column])) {
+                if (optimizeSignals && signalValues.contains(arrangement[row][column])) {
                     condition.setFirstSignal(new SignalID(signalValues.indexOf(arrangement[row][column])));
-                } else if (arrangement[row][column] != 0) {
+                } else if (!optimizeSignals || arrangement[row][column] != 0) {
                     signalValues.add(arrangement[row][column]);
                     condition.setFirstSignal(new SignalID(signalValues.size() - 1));
                 }
