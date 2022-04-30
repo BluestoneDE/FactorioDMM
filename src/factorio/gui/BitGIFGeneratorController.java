@@ -1,5 +1,7 @@
 package factorio.gui;
 
+import factorio.decoders.GifDecoder.DecodedGif;
+import factorio.decoders.GifDecoder.GifDecoder;
 import factorio.encoders.BlueprintStringEncoder;
 import factorio.object.*;
 import javafx.collections.FXCollections;
@@ -12,7 +14,8 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 
-import java.io.File;
+import javax.imageio.ImageIO;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +29,7 @@ public class BitGIFGeneratorController {
     private boolean copyMode = false;
     private boolean optimizeSignals = true;
 
+
     @FXML
     private ListView<File> pictureListView;
     @FXML
@@ -36,6 +40,8 @@ public class BitGIFGeneratorController {
     private Label previewHeight;
     @FXML
     private Button mathButton;
+    @FXML
+    private Button gifButton;
     @FXML
     private Slider brightnessSlider;
 
@@ -57,21 +63,53 @@ public class BitGIFGeneratorController {
         List<File> list = fileChooser.showOpenMultipleDialog(pictureListView.getScene().getWindow());
         if (list != null) {
             pictureList.setAll(list);
-            if (mathButton.isDisabled()) {
-                mathButton.setDisable(false);
-                brightnessSlider.setDisable(false);
-                pictureListView.setOnMouseClicked(event -> updatePreview());
-                pictureListView.setOnKeyPressed(event -> updatePreview());
+            initPictureMeta(new Image(pictureList.get(0).toURI().toString()));
+        }
+    }
+
+    private void initPictureMeta(Image image){
+
+        if (mathButton.isDisabled()) {
+            mathButton.setDisable(false);
+            brightnessSlider.setDisable(false);
+            pictureListView.setOnMouseClicked(event -> updatePreview());
+            pictureListView.setOnKeyPressed(event -> updatePreview());
+        }
+        width = (int) image.getWidth();
+        height = (int) image.getHeight();
+        brightness = 0.5;
+        brightnessSlider.setValue(brightness);
+        previewWidth.setText("Width: " + width + "px");
+        previewHeight.setText("Height: " + height + "px");
+        fontSize = 9.0;
+        updatePreview();
+    }
+    @FXML
+    private void gif(){
+        if(pictureList.size() != 0) pictureList.clear();//Clear for import
+        var fc = new FileChooser();
+        fc.setTitle("Select Gif");
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Gif", "*.gif"));
+        var file = fc.showOpenDialog(pictureListView.getScene().getWindow());
+        DecodedGif decodedGif;
+        try {
+            decodedGif = GifDecoder.DecodeGif(file);
+            for (var img : decodedGif.Images) {
+                var f = File.createTempFile("decodedGif",".png");
+                ImageIO.write(img.image,"png",f);//Write to file since we need for some reason files in the filesystem instead of Images or Buffered Images
+                pictureList.add(f);
             }
-            Image image = new Image(pictureList.get(0).toURI().toString());
-            width = (int) image.getWidth();
-            height = (int) image.getHeight();
-            brightness = 0.5;
-            brightnessSlider.setValue(brightness);
-            previewWidth.setText("Width: " + width + "px");
-            previewHeight.setText("Height: " + height + "px");
-            fontSize = 9.0;
-            updatePreview();
+            initPictureMeta (new Image(pictureList.get(0).toURI().toString()));
+        }
+        catch (IOException e) {
+            var alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error reading");
+            alert.setHeaderText("Can not read file:" + file.getName());
+            var sw = new StringWriter();
+            var pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            alert.setContentText(sw.toString());//Write Stacktrace as body
+            alert.show();
         }
     }
 
