@@ -43,7 +43,7 @@ public class BitGIFGeneratorController {
     @FXML
     private Button mathButton;
     @FXML
-    private CheckBox placeSubstations;
+    private CheckBox substationsCheckbox;
     @FXML
     private Slider brightnessSlider;
 
@@ -78,6 +78,7 @@ public class BitGIFGeneratorController {
 
         if (mathButton.isDisabled()) {
             mathButton.setDisable(false);
+            substationsCheckbox.setDisable(false);
             brightnessSlider.setDisable(false);
             pictureListView.setOnMouseClicked(event -> updatePreview());
             pictureListView.setOnKeyPressed(event -> updatePreview());
@@ -85,6 +86,7 @@ public class BitGIFGeneratorController {
         width = (int) image.getWidth();
         height = (int) image.getHeight();
         brightness = 0.5;
+        substationsCheckbox.setSelected(true);
         brightnessSlider.setValue(brightness);
         previewWidth.setText("Width: " + width + "px");
         previewHeight.setText("Height: " + height + "px");
@@ -125,7 +127,7 @@ public class BitGIFGeneratorController {
         Entity.setEntityCount(0);
         ArrayList<Entity> entities = new ArrayList<>();
         //add substations and remove lights
-        if (placeSubstations.isSelected()) entities.addAll(calculateSubstations());
+        if (substationsCheckbox.isSelected()) entities.addAll(calculateSubstations());
         //optimize values into output
         ArrayList<Integer> signalValues = new ArrayList<>();
         int lastLight = 0;
