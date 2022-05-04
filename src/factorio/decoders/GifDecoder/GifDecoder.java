@@ -8,11 +8,11 @@ public class GifDecoder {
         if(!file.canRead()){
             throw new IOException("Can not read File!");
         }
-        var stream = new FileInputStream(file);
-        var decoder = new GifDecoderInternal();
+        FileInputStream stream = new FileInputStream(file);
+        GifDecoderInternal decoder = new GifDecoderInternal();
         decoder.read(stream);
-        var FrameArray  = new BufferedImageWithDelay[decoder.frameCount];
-        for (var i = 0; i < decoder.frameCount; i++){
+        BufferedImageWithDelay[] FrameArray  = new BufferedImageWithDelay[decoder.frameCount];
+        for (int i = 0; i < decoder.frameCount; i++){
             FrameArray[i]= new BufferedImageWithDelay(decoder.getDelay(i), decoder.getFrame(i));
         }
         return new DecodedGif(FrameArray);

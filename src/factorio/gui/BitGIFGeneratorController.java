@@ -70,6 +70,7 @@ public class BitGIFGeneratorController {
                 gif(list.get(0));
             } else pictureList.setAll(list);
             if (pictureList.size() > 32) pictureList.subList(32, pictureList.size()).clear(); //current technique limitation
+            pictureListView.getFocusModel().focus(0);
             initPictureMeta(new Image(pictureList.get(0).toURI().toString()));
         }
     }
@@ -81,7 +82,7 @@ public class BitGIFGeneratorController {
             substationsCheckbox.setDisable(false);
             brightnessSlider.setDisable(false);
             pictureListView.setOnMouseClicked(event -> updatePreview());
-            pictureListView.setOnKeyPressed(event -> updatePreview());
+            pictureListView.setOnKeyReleased(event -> updatePreview());
         }
         width = (int) image.getWidth();
         height = (int) image.getHeight();
@@ -99,19 +100,19 @@ public class BitGIFGeneratorController {
         if(pictureList.size() != 0) pictureList.clear();//Clear for import
         try {
             DecodedGif decodedGif = GifDecoder.DecodeGif(file);
-            for (var img : decodedGif.Images) {
-                var f = File.createTempFile("decodedGif",".png");
+            for (factorio.decoders.GifDecoder.BufferedImageWithDelay img : decodedGif.Images) {
+                File f = File.createTempFile("decodedGif",".png");
                 //Write to file since we need for some reason files in the filesystem instead of Images or Buffered Images
                 ImageIO.write(img.image,"png",f);
                 pictureList.add(f);
             }
         }
         catch (IOException e) {
-            var alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error reading");
             alert.setHeaderText("Can not read file:" + file.getName());
-            var sw = new StringWriter();
-            var pw = new PrintWriter(sw);
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
             //Write Stacktrace as body
             alert.setContentText(sw.toString());
@@ -192,11 +193,11 @@ public class BitGIFGeneratorController {
                 "constant-combinator",
                 new Position(.5F, .5F),
                 0,
-                new ControlBehaviour(new ArrayList<>() {{
+                new ControlBehaviour(new ArrayList<Filter>() {{
                     add(new Filter(new SignalID("signal-black"), 0, 1));
                     add(new Filter(new SignalID("signal-white"), 1, 11));
                 }}),
-                new Connection(new ConnectionPoint(new ArrayList<>() {{
+                new Connection(new ConnectionPoint(new ArrayList<ConnectionData>() {{
                     add(new ConnectionData(finalLastLight));
                 }}, null))
         ));
@@ -234,7 +235,7 @@ public class BitGIFGeneratorController {
 
     private ArrayList<Entity> calculateSubstations() {
         int offsetX = 1, offsetY = -8;
-        return new ArrayList<>() {{
+        return new ArrayList<Entity>() {{
             for (int subX = offsetX + width; subX > -9; subX-=18) {
                 for (int subY = offsetY + height; subY > -9; subY-=18) {
                     Entity substation = new Entity(
@@ -271,7 +272,7 @@ public class BitGIFGeneratorController {
 
     private ArrayList<Entity> calculateCombinators(ArrayList<Integer> signalValues, int column) {
         float widthOffset = column - width;
-        return new ArrayList<>() {{
+        return new ArrayList<Entity>() {{
             add(new Entity(
                     "arithmetic-combinator",
                     new Position(widthOffset - .5F, 1F),
@@ -283,12 +284,12 @@ public class BitGIFGeneratorController {
                             new SignalID("signal-each")
                     )),
                     new Connection(
-                            new ConnectionPoint(new ArrayList<>() {{
+                            new ConnectionPoint(new ArrayList<ConnectionData>() {{
                                 add(new ConnectionData(Entity.getEntityCount()));
-                            }}, new ArrayList<>() {{
+                            }}, new ArrayList<ConnectionData>() {{
                                 add(new ConnectionData(Entity.getEntityCount() + 2));
                             }}),
-                            new ConnectionPoint(null, new ArrayList<>() {{
+                            new ConnectionPoint(null, new ArrayList<ConnectionData>() {{
                                 add(new ConnectionData(Entity.getEntityCount()));
                             }})
                     )
@@ -308,7 +309,7 @@ public class BitGIFGeneratorController {
                             new Position(widthOffset - .5F, combinator + 2.5F),
                             0,
                             new ControlBehaviour(filters),
-                            new Connection(new ConnectionPoint(null, new ArrayList<>() {{
+                            new Connection(new ConnectionPoint(null, new ArrayList<ConnectionData>() {{
                                 add(new ConnectionData(Entity.getEntityCount()));
                             }}))
                     ));

@@ -37,7 +37,7 @@ public final class Blueprint {
     }
 
     public void setEntities(ArrayList<Entity> entities) {
-        this.entities = new ArrayList<>() {{
+        this.entities = new ArrayList<Entity>() {{
             addAll(entities);
         }};
     }

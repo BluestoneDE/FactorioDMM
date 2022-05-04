@@ -98,7 +98,7 @@ public final class Entity {
     }
 
     public void setNeighbours(ArrayList<Integer> neighbours) {
-        this.neighbours = new ArrayList<>() {{
+        this.neighbours = new ArrayList<Integer>() {{
             addAll(neighbours);
         }};
     }
