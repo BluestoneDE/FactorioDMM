@@ -1,5 +1,7 @@
 package factorio.object;
 
+import java.util.ArrayList;
+
 public final class Entity {
     private static int entity_count;
     public final int entity_number;
@@ -9,28 +11,30 @@ public final class Entity {
     public Float orientation;
     public ControlBehaviour control_behavior;
     public Connection connections;
+    public ArrayList<Integer> neighbours;
 
     public Entity() {
         entity_count ++;
         this.entity_number = entity_count;
     }
 
+    public Entity(String name, Position position) {
+        this();
+        setName(name);
+        setPosition(position);
+    }
+
     public Entity(
             String name,
             Position position,
             Integer direction,
-            Float orientation,
-            ControlBehaviour control_behavior,
+            ControlBehaviour controlBehavior,
             Connection connections
             ) {
-        entity_count ++;
-        this.entity_number = entity_count;
-        this.name = name;
-        this.position = position;
-        this.direction = direction;
-        this.orientation = orientation;
-        this.control_behavior = control_behavior;
-        this.connections = connections;
+        this(name, position);
+        setDirection(direction);
+        setControlBehavior(controlBehavior);
+        setConnections(connections);
     }
 
     public static void setEntityCount(int entity_count) {
@@ -87,5 +91,15 @@ public final class Entity {
 
     public void setControlBehavior(ControlBehaviour control_behaviour) {
         this.control_behavior = control_behaviour;
+    }
+
+    public ArrayList<Integer> getNeighbours() {
+        return neighbours;
+    }
+
+    public void setNeighbours(ArrayList<Integer> neighbours) {
+        this.neighbours = new ArrayList<>() {{
+            addAll(neighbours);
+        }};
     }
 }

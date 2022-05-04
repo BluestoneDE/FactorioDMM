@@ -37,18 +37,9 @@ public final class Blueprint {
     }
 
     public void setEntities(ArrayList<Entity> entities) {
-        Entity.setEntityCount(0);
-        this.entities = new ArrayList<>();
-        for (Entity entity : entities) {
-            this.entities.add(new Entity(
-                    entity.getName(),
-                    entity.getPosition(),
-                    entity.getDirection(),
-                    entity.getOrientation(),
-                    entity.getControlBehavior(),
-                    entity.getConnections()
-            ));
-        }
+        this.entities = new ArrayList<>() {{
+            addAll(entities);
+        }};
     }
 
     public Icon[] getIcons() {
