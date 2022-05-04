@@ -28,7 +28,6 @@ public class BitGIFGeneratorController {
     private double brightness;
     private double fontSize;
     private boolean copyMode = false;
-    private boolean addSubstations = true;
     private boolean optimizeSignals = true;
     private Integer[][] arrangement;
 
@@ -44,7 +43,7 @@ public class BitGIFGeneratorController {
     @FXML
     private Button mathButton;
     @FXML
-    private Button gifButton;
+    private CheckBox placeSubstations;
     @FXML
     private Slider brightnessSlider;
 
@@ -57,15 +56,20 @@ public class BitGIFGeneratorController {
     @FXML
     private void open() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
+        fileChooser.setTitle("Open Resource File(s)");
         fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("All Images", "*.png", "*.jpg", "*.gif", "*.bmp", "*.jpeg", "*.wbmp"),
                 new FileChooser.ExtensionFilter("PNG", "*.png"),
                 new FileChooser.ExtensionFilter("JPG", "*.jpg"),
-                new FileChooser.ExtensionFilter("All Images", "*.*")
+                new FileChooser.ExtensionFilter("GIF", "*.gif"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
         );
         List<File> list = fileChooser.showOpenMultipleDialog(pictureListView.getScene().getWindow());
         if (list != null) {
-            pictureList.setAll(list);
+            if (fileChooser.getSelectedExtensionFilter().getDescription().equals("GIF") || list.get(0).getName().endsWith(".gif")) {
+                gif(list.get(0));
+            } else pictureList.setAll(list);
+            if (pictureList.size() > 32) pictureList.subList(32, pictureList.size()).clear(); //current technique limitation
             initPictureMeta(new Image(pictureList.get(0).toURI().toString()));
         }
     }
@@ -87,23 +91,17 @@ public class BitGIFGeneratorController {
         fontSize = 9.0;
         updatePreview();
     }
+
     @FXML
-    private void gif(){
+    private void gif(File file){
         if(pictureList.size() != 0) pictureList.clear();//Clear for import
-        var fc = new FileChooser();
-        fc.setTitle("Select Gif");
-        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Gif", "*.gif"));
-        var file = fc.showOpenDialog(pictureListView.getScene().getWindow());
         try {
-            if (file != null) {
-                DecodedGif decodedGif = GifDecoder.DecodeGif(file);
-                for (var img : decodedGif.Images) {
-                    var f = File.createTempFile("decodedGif",".png");
-                    //Write to file since we need for some reason files in the filesystem instead of Images or Buffered Images
-                    ImageIO.write(img.image,"png",f);
-                    pictureList.add(f);
-                }
-                initPictureMeta (new Image(pictureList.get(0).toURI().toString()));
+            DecodedGif decodedGif = GifDecoder.DecodeGif(file);
+            for (var img : decodedGif.Images) {
+                var f = File.createTempFile("decodedGif",".png");
+                //Write to file since we need for some reason files in the filesystem instead of Images or Buffered Images
+                ImageIO.write(img.image,"png",f);
+                pictureList.add(f);
             }
         }
         catch (IOException e) {
@@ -127,7 +125,7 @@ public class BitGIFGeneratorController {
         Entity.setEntityCount(0);
         ArrayList<Entity> entities = new ArrayList<>();
         //add substations and remove lights
-        if (addSubstations) entities.addAll(calculateSubstations());
+        if (placeSubstations.isSelected()) entities.addAll(calculateSubstations());
         //optimize values into output
         ArrayList<Integer> signalValues = new ArrayList<>();
         int lastLight = 0;
@@ -186,7 +184,7 @@ public class BitGIFGeneratorController {
             placedCombinators = false;
         }
         int finalLastLight = lastLight;
-        entities.addAll(calculateCombinators(signalValues, width));
+        if (signalValues.size() > 0) entities.addAll(calculateCombinators(signalValues, width));
         //frame control combinator
         entities.add(new Entity(
                 "constant-combinator",
