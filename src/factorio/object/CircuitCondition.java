@@ -9,14 +9,18 @@ public final class CircuitCondition {
     public CircuitCondition() {
     }
 
-    public CircuitCondition(SignalID first_signal, SignalID second_signal, String comparator) {
+    public CircuitCondition(SignalID first_signal) {
         this.first_signal = first_signal;
+    }
+
+    public CircuitCondition(SignalID first_signal, SignalID second_signal, String comparator) {
+        this(first_signal);
         this.second_signal = second_signal;
         this.comparator = comparator;
     }
 
     public CircuitCondition(SignalID first_signal, Integer constant, String comparator) {
-        this.first_signal = first_signal;
+        this(first_signal);
         this.constant = constant;
         this.comparator = comparator;
     }

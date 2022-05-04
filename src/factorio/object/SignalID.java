@@ -8,25 +8,6 @@ public final class SignalID {
 
     public SignalID() {}
 
-    public SignalID(int pos) {
-        if (pos < virtuals.length) {
-            name = virtuals[pos];
-            type = "virtual";
-            return;
-        }
-        pos -= virtuals.length;
-        if (pos < items.length) {
-            name = items[pos];
-            type = "item";
-            return;
-        }
-        pos -= items.length;
-        if (pos < fluids.length) {
-            name = fluids[pos];
-            type = "fluid";
-        }
-    }
-
     public SignalID(String name) {
         if (Arrays.asList(virtuals).contains(name) || Arrays.asList(extraVirtuals).contains(name)) {
             this.name = name;
@@ -43,6 +24,21 @@ public final class SignalID {
     public SignalID(String name, String type) {
         this.name = name;
         this.type = type;
+    }
+
+    public static boolean hasID(int pos) {
+        return pos < (virtuals.length + items.length + fluids.length);
+    }
+
+    public static SignalID getID(int pos) {
+        if (hasID(pos)) {
+            if (pos < virtuals.length) return new SignalID(virtuals[pos], "virtual");
+            pos -= virtuals.length;
+            if (pos < items.length) return new SignalID(items[pos], "item");
+            pos -= items.length;
+            if (pos < fluids.length) return new SignalID(fluids[pos], "fluid");
+        }
+        return null;
     }
 
     public String getName() {
