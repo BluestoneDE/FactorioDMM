@@ -2,25 +2,27 @@
 
 ### About
 * This is a JavaFX Application
-* it converts a series of images into on/offsignal values
-* it outputs a Factorio Blueprint String
-* I made this for personal *reasons* but might publish it
+* It converts a series of images into on/offsignal values
+* It outputs a Factorio Blueprint String
 
-### ToDo
-* ~~Make Signal List~~
-* ~~Sucessfully output encoded Blueprint String~~
-* Add ViewManager
-* Add other generation method (requires ViewManager)
-* GUI redesign
+![interface](preview/interface.png)
+![game](preview/game.png)
 
-### Ideas
-* Add more frames
-* Add more signals (segmenting)
-* Implement Colors (new technique)
-* Read GIF format
-* Read Video formats
+### ✔ Todo List
+* [ ] GUI redesign
+* [ ] Add ViewManager
+* [ ] Add other generation method (requires ViewManager)
+* [x] ~~Make Signal List~~
+* [x] ~~Sucessfully output encoded Blueprint String~~
 
-### Useful websites:
+### 💡 Ideas
+* [ ] Add more frames
+* [ ] Implement colours (new technique)
+* [ ] Read video formats
+* [x] ~~Add more signals (segmenting)~~
+* [x] ~~Read GIF format~~
+
+### Useful links:
 * https://wiki.factorio.com/Blueprint_string_format
 * https://wiki.factorio.com/Data.raw
 * https://factorio.tmin10.ru/
