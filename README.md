@@ -1,8 +1,8 @@
 # Factorio Display Math Machine
 
-### About
+### ⚠ About
 * This is a JavaFX Application
-* It converts a series of images into on/offsignal values
+* It converts a series of images into on/off signal values
 * It outputs a Factorio Blueprint String
 
 ![interface](preview/interface.png)
