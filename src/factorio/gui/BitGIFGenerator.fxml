@@ -78,8 +78,8 @@
                 <Font name="Comic Sans MS Bold" size="18.0"/>
             </font>
         </Label>
-        <CheckBox fx:id="substationsCheckbox" disable="true" mnemonicParsing="false" selected="true" text="Substations"
-                  textFill="WHITE" GridPane.rowIndex="5">
+        <CheckBox fx:id="substationsCheckbox" disable="true" mnemonicParsing="false" onAction="#updatePreview"
+                  selected="true" text="Substations" textFill="WHITE" GridPane.rowIndex="5">
             <font>
                 <Font name="Comic Sans MS Bold" size="18.0"/>
             </font>

@@ -29,6 +29,7 @@ public class BitGIFGeneratorController {
     private double fontSize;
     private boolean copyMode = false;
     private boolean optimizeSignals = true;
+    private int substationOffsetX = 1, substationOffsetY = -8;
     private Integer[][] arrangement;
 
 
@@ -130,17 +131,19 @@ public class BitGIFGeneratorController {
         if (substationsCheckbox.isSelected()) entities.addAll(calculateSubstations());
         //optimize values into output
         ArrayList<Integer> signalValues = new ArrayList<>();
-        int lastLight = 0;
-        boolean placedCombinators = false;
+        int lastLamp = 0;
+        boolean placedCombinators = false, redLine = false;
         for (int column = 0; column < width; column++) {
             //check ahead for new signals
             int valuesLength = signalValues.size();
-            for (int row = 0; row < height; row++) {
-                if (arrangement[row][column] == null) {
-                    continue;
-                }
-                if (!signalValues.contains(arrangement[row][column]) && arrangement[row][column] != 0) {
-                    signalValues.add(arrangement[row][column]);
+            if (column > 0) {
+                for (int row = 0; row < height; row++) {
+                    if (arrangement[row][column] == null) {
+                        continue;
+                    }
+                    if (!optimizeSignals || (!signalValues.contains(arrangement[row][column]) && arrangement[row][column] != 0)) {
+                        signalValues.add(arrangement[row][column]);
+                    }
                 }
             }
             //place combinators
@@ -149,6 +152,7 @@ public class BitGIFGeneratorController {
                 entities.addAll(calculateCombinators(signalValues, column));
                 signalValues.clear();
                 placedCombinators = true;
+                redLine = true;
             }
             for (int row = 0; row < height; row++) {
                 if (arrangement[row][column] == null) {
@@ -159,7 +163,7 @@ public class BitGIFGeneratorController {
                         new Position(-width + column + .5F, -height + row + .5F)
                 );
                 // behaviour
-                if (signalValues.contains(arrangement[row][column])) {
+                if (optimizeSignals && signalValues.contains(arrangement[row][column])) {
                     lamp.setControlBehavior(new ControlBehaviour(true, new CircuitCondition(
                             SignalID.getID(signalValues.indexOf(arrangement[row][column]))
                     )));
@@ -172,20 +176,20 @@ public class BitGIFGeneratorController {
                 // connections
                 ArrayList<ConnectionData> GreenConnections = new ArrayList<>();
                 ArrayList<ConnectionData> RedConnections = new ArrayList<>();
-                if (row != 0) GreenConnections.add(new ConnectionData(Entity.getEntityCount() - 1));
+                if (row != 0) GreenConnections.add(new ConnectionData(lamp.entity_number - 1));
                 if (row == height - 1) {
                     if (column != 0) {
-                        if (!placedCombinators) GreenConnections.add(new ConnectionData(lastLight));
-                        RedConnections.add(new ConnectionData(lastLight));
+                        if (!placedCombinators) GreenConnections.add(new ConnectionData(lastLamp));
+                        if (redLine) RedConnections.add(new ConnectionData(lastLamp));
                     }
-                    lastLight = Entity.getEntityCount();
+                    lastLamp = lamp.entity_number;
                 }
                 lamp.setConnections(new Connection(new ConnectionPoint(RedConnections, GreenConnections)));
                 entities.add(lamp);
             }
             placedCombinators = false;
         }
-        int finalLastLight = lastLight;
+        final int finalLastLamp = lastLamp;
         if (signalValues.size() > 0) entities.addAll(calculateCombinators(signalValues, width));
         //frame control combinator
         entities.add(new Entity(
@@ -196,8 +200,8 @@ public class BitGIFGeneratorController {
                     add(new Filter(new SignalID("signal-black"), 0, 1));
                     add(new Filter(new SignalID("signal-white"), 1, 11));
                 }}),
-                new Connection(new ConnectionPoint(new ArrayList<>() {{
-                    add(new ConnectionData(finalLastLight));
+                new Connection(new ConnectionPoint(new ArrayList<ConnectionData>() {{
+                    add(new ConnectionData(finalLastLamp));
                 }}, null))
         ));
         //blueprint
@@ -233,10 +237,9 @@ public class BitGIFGeneratorController {
     }
 
     private ArrayList<Entity> calculateSubstations() {
-        int offsetX = 1, offsetY = -8;
-        return new ArrayList<>() {{
-            for (int subX = offsetX + width; subX > -9; subX-=18) {
-                for (int subY = offsetY + height; subY > -9; subY-=18) {
+        return new ArrayList<Entity>() {{
+            for (int subX = substationOffsetX + width; subX > -9; subX-=18) {
+                for (int subY = substationOffsetY + height; subY > -9; subY-=18) {
                     Entity substation = new Entity(
                             "substation",
                             new Position(-width + subX * 1F, -height + subY * 1F)
@@ -244,10 +247,10 @@ public class BitGIFGeneratorController {
                     // neighbouring substations
                     ArrayList<Integer> neighbours = new ArrayList<>();
                     if (subY > 9) neighbours.add(Entity.getEntityCount() + 1);
-                    if (subY != offsetY + height) neighbours.add(Entity.getEntityCount() - 1);
+                    if (subY != substationOffsetY + height) neighbours.add(Entity.getEntityCount() - 1);
                     else {
-                        if (subX > 9) neighbours.add((int) (Entity.getEntityCount() + Math.ceil((offsetY+height+9)/18.0)));
-                        if (subX != offsetX + width) neighbours.add((int) (Entity.getEntityCount() - Math.ceil((offsetX+width+9)/18.0)));
+                        if (subX > 9) neighbours.add((int) (Entity.getEntityCount() + Math.ceil((substationOffsetY+height+9)/18.0)));
+                        if (subX != substationOffsetX + width) neighbours.add((int) (Entity.getEntityCount() - Math.ceil((substationOffsetX+width+9)/18.0)));
                     }
                     substation.setNeighbours(neighbours);
                     add(substation);
@@ -335,7 +338,10 @@ public class BitGIFGeneratorController {
             PixelReader pixelReader = image.getPixelReader();
             for (int readY = 0; readY < height; readY++) {
                 for (int readX = 0; readX < width; readX++) {
-                    if (readX < image.getWidth() && readY < image.getHeight() && pixelReader.getColor(readX, readY).getBrightness() >= brightness) {
+                    int subY = height-readY+substationOffsetY+18, subX = width-readX+substationOffsetX+18;
+                    if (substationsCheckbox.isSelected() && subY%18-subY%2 == 0 && subX%18-subX%2 == 0) {
+                        previewText.append("▄▀ ");
+                    } else if (readX < image.getWidth() && readY < image.getHeight() && pixelReader.getColor(readX, readY).getBrightness() >= brightness) {
                         previewText.append("██ ");
                     } else {
                         previewText.append("░░ ");
