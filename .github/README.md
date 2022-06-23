@@ -1,7 +1,7 @@
 <!-- TITLE -->
 ![banner](https://repository-images.githubusercontent.com/301835330/1f757753-2ee2-415b-9170-ebdbdccd6967)
 <h2 align="center">
-    This is a JavaFX Application that converts a series of images into display blueprints
+    A JavaFX Application that converts a series of images into display blueprints
 </p>
 
 ### Installation
