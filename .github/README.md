@@ -6,7 +6,7 @@
 
 ### 📥 Installation
 1. Download the latest version on [GitHub][download-link].
-2. Run the **Factorio.jar** file with Java (version 8 or higher)
+2. Run the **Factorio.jar** file with Java (version 8 or higher).
 
 ### ✔ Todo List
 * [ ] GUI redesign
