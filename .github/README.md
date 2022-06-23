@@ -5,7 +5,7 @@
 </p>
 
 ### 📥 Installation
-1. Download the latest version of the mod on [GitHub][download-link].
+1. Download the latest version on [GitHub][download-link].
 2. Run the **Factorio.jar** file with Java (version 8 or higher)
 
 ### ✔ Todo List
