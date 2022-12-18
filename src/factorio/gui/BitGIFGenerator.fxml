@@ -40,13 +40,13 @@
         <CheckBox fx:id="substationsCheckbox" disable="true" mnemonicParsing="false" onAction="#toggleOffsets"
                   selected="true" text="Substations" textFill="WHITE" GridPane.rowIndex="5" minWidth="-Infinity"/>
         <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.rowIndex="6">
-            <Spinner fx:id="substationOffsetX" onMouseClicked="#updatePreview" disable="true">
+            <Spinner fx:id="substationOffsetX" onMouseClicked="#updatePreview" disable="true" minWidth="0.0">
                 <valueFactory>
                     <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="1"
                                                                     min="-9" max="8"/>
                 </valueFactory>
             </Spinner>
-            <Spinner fx:id="substationOffsetY" onMouseClicked="#updatePreview" disable="true">
+            <Spinner fx:id="substationOffsetY" onMouseClicked="#updatePreview" disable="true" minWidth="0.0">
                 <valueFactory>
                     <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="-8"
                                                                     min="-8" max="9"/>
