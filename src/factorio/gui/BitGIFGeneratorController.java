@@ -28,7 +28,6 @@ public class BitGIFGeneratorController {
     private boolean copyMode = false, optimizeSignals = true;
     private Integer[][] arrangement;
 
-
     @FXML
     private ListView<File> pictureListView;
     @FXML
@@ -70,14 +69,13 @@ public class BitGIFGeneratorController {
             if (fileChooser.getSelectedExtensionFilter().getDescription().equals("GIF") || list.get(0).getName().endsWith(".gif")) {
                 gif(list.get(0));
             } else pictureList.setAll(list);
-            if (pictureList.size() > 32) pictureList.subList(32, pictureList.size()).clear(); //current technique limitation
-            pictureListView.getFocusModel().focus(0);
+            if (pictureList.size() > 32)
+                pictureList.subList(32, pictureList.size()).clear(); //current technique limitation
             initPictureMeta(new Image(pictureList.get(0).toURI().toString()));
         }
     }
 
-    private void initPictureMeta(Image image){
-
+    private void initPictureMeta(Image image) {
         if (mathButton.isDisabled()) {
             mathButton.setDisable(false);
             substationsCheckbox.setDisable(false);
@@ -99,19 +97,18 @@ public class BitGIFGeneratorController {
     }
 
     @FXML
-    private void gif(File file){
-        if(pictureList.size() != 0) pictureList.clear();//Clear for import
+    private void gif(File file) {
+        if (pictureList.size() != 0) pictureList.clear();//Clear for import
         try {
             DecodedGif decodedGif = GifDecoder.DecodeGif(file);
-            for (factorio.decoders.GifDecoder.BufferedImageWithDelay img : decodedGif.Images) {
-                File f = File.createTempFile("decodedGif",".png");
+            for (var img : decodedGif.Images) {
+                var f = File.createTempFile("decodedGif", ".png");
                 //Write to file since we need for some reason files in the filesystem instead of Images or Buffered Images
-                ImageIO.write(img.image,"png",f);
+                ImageIO.write(img.image, "png", f);
                 pictureList.add(f);
             }
-        }
-        catch (IOException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+        } catch (IOException e) {
+            var alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error reading");
             alert.setHeaderText("Can not read file:" + file.getName());
             StringWriter sw = new StringWriter();
@@ -235,14 +232,16 @@ public class BitGIFGeneratorController {
                         if (pixelReader.getColor(readX, readY).getBrightness() >= brightness) {
                             arrangement[readY][readX] = setBit(imageCount, arrangement[readY][readX]);
                         }
-            }}}
+                    }
+                }
+            }
         }
     }
 
     private ArrayList<Entity> calculateSubstations() {
         return new ArrayList<Entity>() {{
-            for (int subX = substationOffsetX.getValue() + width; subX > -9; subX-=18) {
-                for (int subY = substationOffsetY.getValue() + height; subY > -9; subY-=18) {
+            for (int subX = substationOffsetX.getValue() + width; subX > -9; subX -= 18) {
+                for (int subY = substationOffsetY.getValue() + height; subY > -9; subY -= 18) {
                     Entity substation = new Entity(
                             "substation",
                             new Position(-width + subX * 1F, -height + subY * 1F)
@@ -252,12 +251,10 @@ public class BitGIFGeneratorController {
                     if (subY > 9) neighbours.add(Entity.getEntityCount() + 1);
                     if (subY != substationOffsetY.getValue() + height) neighbours.add(Entity.getEntityCount() - 1);
                     else {
-                        if (subX > 9) neighbours.add(
-                                (int) (Entity.getEntityCount()+Math.ceil((substationOffsetY.getValue()+height+9)/18.0))
-                        );
-                        if (subX != substationOffsetX.getValue() + width) neighbours.add(
-                                (int) (Entity.getEntityCount() - Math.ceil((substationOffsetX.getValue()+width+9)/18.0))
-                        );
+                        if (subX > 9)
+                            neighbours.add((int) (Entity.getEntityCount() + Math.ceil((substationOffsetY.getValue() + height + 9) / 18.0)));
+                        if (subX != substationOffsetX.getValue() + width)
+                            neighbours.add((int) (Entity.getEntityCount() - Math.ceil((substationOffsetX.getValue() + width + 9) / 18.0)));
                     }
                     substation.setNeighbours(neighbours);
                     add(substation);
@@ -266,12 +263,12 @@ public class BitGIFGeneratorController {
                         if (subX < width) {
                             if (subX >= 0 && subY >= 0) {
                                 arrangement[subY][subX] = null;
-                                if (subY-1 >= 0) arrangement[subY-1][subX] = null;
+                                if (subY - 1 >= 0) arrangement[subY - 1][subX] = null;
                             }
                         }
-                        if (subX-1 >= 0 && subY >= 0) {
-                            arrangement[subY][subX-1] = null;
-                            if (subY-1 >= 0) arrangement[subY-1][subX-1] = null;
+                        if (subX - 1 >= 0 && subY >= 0) {
+                            arrangement[subY][subX - 1] = null;
+                            if (subY - 1 >= 0) arrangement[subY - 1][subX - 1] = null;
                         }
                     }
                 }
@@ -345,8 +342,8 @@ public class BitGIFGeneratorController {
             PixelReader pixelReader = image.getPixelReader();
             for (int readY = 0; readY < height; readY++) {
                 for (int readX = 0; readX < width; readX++) {
-                    int subY = height-readY+substationOffsetY.getValue()+18, subX = width-readX+substationOffsetX.getValue()+18;
-                    if (substationsCheckbox.isSelected() && subY%18-subY%2 == 0 && subX%18-subX%2 == 0) {
+                    int subY = height - readY + substationOffsetY.getValue() + 18, subX = width - readX + substationOffsetX.getValue() + 18;
+                    if (substationsCheckbox.isSelected() && subY % 18 - subY % 2 == 0 && subX % 18 - subX % 2 == 0) {
                         previewText.append("▄▀ ");
                     } else if (readX < image.getWidth() && readY < image.getHeight() && pixelReader.getColor(readX, readY).getBrightness() >= brightness) {
                         previewText.append("██ ");
@@ -359,7 +356,7 @@ public class BitGIFGeneratorController {
                 }
             }
         }).run();
-        previewTextArea.setFont(Font.font("Consolas Bold", fontSize*.1));
+        previewTextArea.setFont(Font.font("Consolas Bold", fontSize * .1));
         previewTextArea.setWrapText(false);
         previewTextArea.setText(previewText.toString());
     }
@@ -378,19 +375,17 @@ public class BitGIFGeneratorController {
 
     @FXML
     private void zoom(ScrollEvent scrollEvent) {
-        if (copyMode) {
-            return;
-        }
-        int change = (int) Math.ceil(fontSize/20f);
+        if (copyMode) return;
+        int change = (int) Math.ceil(fontSize / 20f);
         previewTextArea.setScrollLeft(0.0);
-        if (scrollEvent.getDeltaY() < 0 && fontSize+change <= 700) {
+        if (scrollEvent.getDeltaY() < 0 && fontSize + change <= 700) {
             previewTextArea.setScrollTop(Double.MAX_VALUE);
             fontSize += change;
-        } else if (scrollEvent.getDeltaY() > 0 && fontSize-change >= 6) {
+        } else if (scrollEvent.getDeltaY() > 0 && fontSize - change >= 6) {
             previewTextArea.setScrollTop(0.0);
             fontSize -= change;
         }
-        previewTextArea.setFont(Font.font("Consolas Bold", fontSize*.1));
+        previewTextArea.setFont(Font.font("Consolas Bold", fontSize * .1));
     }
 
     private static int setBit(int bit, int target) {
