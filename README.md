@@ -1,26 +1,31 @@
-# Factorio Display Math Machine
+<!-- TITLE -->
+![banner](https://repository-images.githubusercontent.com/301835330/1f757753-2ee2-415b-9170-ebdbdccd6967)
+<h2 align="center">
+    A JavaFX Application that converts a series of images into display blueprints
+</p>
 
-### About
-* This is a JavaFX Application
-* it converts a series of images into on/offsignal values
-* it outputs a Factorio Blueprint String
-* I made this for personal *reasons* but might publish it
+### 📥 Installation
+1. Download the latest version on [GitHub][download-link].
+2. Run the **Factorio.jar** file with Java (version 8 or higher).
 
-### ToDo
-* ~~Make Signal List~~
-* ~~Sucessfully output encoded Blueprint String~~
-* Add ViewManager
-* Add other generation method (requires ViewManager)
-* GUI redesign
+### ✔ Todo List
+* [ ] GUI redesign
+* [ ] Add ViewManager
+* [ ] Add other generation method (requires ViewManager)
+* [x] ~~Make Signal List~~
+* [x] ~~Sucessfully output encoded Blueprint String~~
 
-### Ideas
-* Add more frames
-* Add more signals (segmenting)
-* Implement Colors (new technique)
-* Read GIF format
-* Read Video formats
+### 💡 Ideas
+* [ ] Add more frames
+* [ ] Implement colours (new technique)
+* [ ] Read video formats
+* [x] ~~Add more signals (segmenting)~~
+* [x] ~~Read GIF format~~
 
-### Useful websites:
+### 🔗 Useful links:
 * https://wiki.factorio.com/Blueprint_string_format
 * https://wiki.factorio.com/Data.raw
 * https://factorio.tmin10.ru/
+
+<!-- LINKS -->
+[download-link]: https://github.com/BluestoneDE/FactorioDMM/releases/latest/download/FactorioDMM.jar
