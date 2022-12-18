@@ -101,14 +101,14 @@ public class BitGIFGeneratorController {
         if (pictureList.size() != 0) pictureList.clear();//Clear for import
         try {
             DecodedGif decodedGif = GifDecoder.DecodeGif(file);
-            for (var img : decodedGif.Images) {
-                var f = File.createTempFile("decodedGif", ".png");
+            for (factorio.decoders.GifDecoder.BufferedImageWithDelay img : decodedGif.Images) {
+                File f = File.createTempFile("decodedGif", ".png");
                 //Write to file since we need for some reason files in the filesystem instead of Images or Buffered Images
                 ImageIO.write(img.image, "png", f);
                 pictureList.add(f);
             }
         } catch (IOException e) {
-            var alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error reading");
             alert.setHeaderText("Can not read file:" + file.getName());
             StringWriter sw = new StringWriter();
