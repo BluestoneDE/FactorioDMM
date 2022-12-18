@@ -23,13 +23,9 @@ import java.util.List;
 public class BitGIFGeneratorController {
 
     private ObservableList<File> pictureList;
-    private int width;
-    private int height;
+    private int width, height, fontSize;
     private double brightness;
-    private double fontSize;
-    private boolean copyMode = false;
-    private boolean optimizeSignals = true;
-    private int substationOffsetX = 1, substationOffsetY = -8;
+    private boolean copyMode = false, optimizeSignals = true;
     private Integer[][] arrangement;
 
 
@@ -45,6 +41,10 @@ public class BitGIFGeneratorController {
     private Button mathButton;
     @FXML
     private CheckBox substationsCheckbox;
+    @FXML
+    private Spinner<Integer> substationOffsetX;
+    @FXML
+    private Spinner<Integer> substationOffsetY;
     @FXML
     private Slider brightnessSlider;
 
@@ -81,6 +81,8 @@ public class BitGIFGeneratorController {
         if (mathButton.isDisabled()) {
             mathButton.setDisable(false);
             substationsCheckbox.setDisable(false);
+            substationOffsetX.setDisable(false);
+            substationOffsetY.setDisable(false);
             brightnessSlider.setDisable(false);
             pictureListView.setOnMouseClicked(event -> updatePreview());
             pictureListView.setOnKeyReleased(event -> updatePreview());
@@ -92,7 +94,7 @@ public class BitGIFGeneratorController {
         brightnessSlider.setValue(brightness);
         previewWidth.setText("Width: " + width + "px");
         previewHeight.setText("Height: " + height + "px");
-        fontSize = 9.0;
+        fontSize = 90;
         updatePreview();
     }
 
@@ -142,7 +144,7 @@ public class BitGIFGeneratorController {
                     if (arrangement[row][column] == null) {
                         continue;
                     }
-                    if (!optimizeSignals || (!signalValues.contains(arrangement[row][column]) && arrangement[row][column] != 0)) {
+                    if ((!signalValues.contains(arrangement[row][column]) && arrangement[row][column] != 0) || !optimizeSignals) {
                         signalValues.add(arrangement[row][column]);
                     }
                 }
@@ -164,11 +166,11 @@ public class BitGIFGeneratorController {
                         new Position(-width + column + .5F, -height + row + .5F)
                 );
                 // behaviour
-                if (optimizeSignals && signalValues.contains(arrangement[row][column])) {
+                if (signalValues.contains(arrangement[row][column]) && optimizeSignals) {
                     lamp.setControlBehavior(new ControlBehaviour(true, new CircuitCondition(
                             SignalID.getID(signalValues.indexOf(arrangement[row][column]))
                     )));
-                } else if (!optimizeSignals || arrangement[row][column] != 0) {
+                } else if (arrangement[row][column] != 0 || !optimizeSignals) {
                     signalValues.add(arrangement[row][column]);
                     lamp.setControlBehavior(new ControlBehaviour(true, new CircuitCondition(
                             SignalID.getID(signalValues.size() - 1)
@@ -212,7 +214,7 @@ public class BitGIFGeneratorController {
                 new Icon[]{new Icon(1, new SignalID("small-lamp"))},
                 281479271743489L
         );
-        previewTextArea.setFont(Font.font("Comic Sans MS Bold", 9.0));
+        previewTextArea.setFont(Font.font("Consolas Bold", 9.0));
         previewTextArea.setText(BlueprintStringEncoder.Encode(blueprint));
         previewTextArea.setWrapText(true);
         copyMode = true;
@@ -239,8 +241,8 @@ public class BitGIFGeneratorController {
 
     private ArrayList<Entity> calculateSubstations() {
         return new ArrayList<Entity>() {{
-            for (int subX = substationOffsetX + width; subX > -9; subX-=18) {
-                for (int subY = substationOffsetY + height; subY > -9; subY-=18) {
+            for (int subX = substationOffsetX.getValue() + width; subX > -9; subX-=18) {
+                for (int subY = substationOffsetY.getValue() + height; subY > -9; subY-=18) {
                     Entity substation = new Entity(
                             "substation",
                             new Position(-width + subX * 1F, -height + subY * 1F)
@@ -248,10 +250,14 @@ public class BitGIFGeneratorController {
                     // neighbouring substations
                     ArrayList<Integer> neighbours = new ArrayList<>();
                     if (subY > 9) neighbours.add(Entity.getEntityCount() + 1);
-                    if (subY != substationOffsetY + height) neighbours.add(Entity.getEntityCount() - 1);
+                    if (subY != substationOffsetY.getValue() + height) neighbours.add(Entity.getEntityCount() - 1);
                     else {
-                        if (subX > 9) neighbours.add((int) (Entity.getEntityCount() + Math.ceil((substationOffsetY+height+9)/18.0)));
-                        if (subX != substationOffsetX + width) neighbours.add((int) (Entity.getEntityCount() - Math.ceil((substationOffsetX+width+9)/18.0)));
+                        if (subX > 9) neighbours.add(
+                                (int) (Entity.getEntityCount()+Math.ceil((substationOffsetY.getValue()+height+9)/18.0))
+                        );
+                        if (subX != substationOffsetX.getValue() + width) neighbours.add(
+                                (int) (Entity.getEntityCount() - Math.ceil((substationOffsetX.getValue()+width+9)/18.0))
+                        );
                     }
                     substation.setNeighbours(neighbours);
                     add(substation);
@@ -339,7 +345,7 @@ public class BitGIFGeneratorController {
             PixelReader pixelReader = image.getPixelReader();
             for (int readY = 0; readY < height; readY++) {
                 for (int readX = 0; readX < width; readX++) {
-                    int subY = height-readY+substationOffsetY+18, subX = width-readX+substationOffsetX+18;
+                    int subY = height-readY+substationOffsetY.getValue()+18, subX = width-readX+substationOffsetX.getValue()+18;
                     if (substationsCheckbox.isSelected() && subY%18-subY%2 == 0 && subX%18-subX%2 == 0) {
                         previewText.append("▄▀ ");
                     } else if (readX < image.getWidth() && readY < image.getHeight() && pixelReader.getColor(readX, readY).getBrightness() >= brightness) {
@@ -353,9 +359,21 @@ public class BitGIFGeneratorController {
                 }
             }
         }).run();
-        previewTextArea.setFont(Font.font("Comic Sans MS Bold", fontSize));
+        previewTextArea.setFont(Font.font("Consolas Bold", fontSize*.1));
         previewTextArea.setWrapText(false);
         previewTextArea.setText(previewText.toString());
+    }
+
+    @FXML
+    private void toggleOffsets() {
+        if (substationsCheckbox.isSelected()) {
+            substationOffsetX.setDisable(false);
+            substationOffsetY.setDisable(false);
+        } else {
+            substationOffsetX.setDisable(true);
+            substationOffsetY.setDisable(true);
+        }
+        updatePreview();
     }
 
     @FXML
@@ -363,14 +381,16 @@ public class BitGIFGeneratorController {
         if (copyMode) {
             return;
         }
-        if (scrollEvent.getDeltaY() < 0 && fontSize < 70.0) {
-            fontSize += Math.ceil(fontSize) / 10.0;
-            previewTextArea.setFont(Font.font("Comic Sans MS Bold", fontSize));
-        } else if (scrollEvent.getDeltaY() > 0 && fontSize > 0.6) {
-            fontSize -= Math.ceil(fontSize) / 10.0;
-            previewTextArea.setFont(Font.font("Comic Sans MS Bold", fontSize));
+        int change = (int) Math.ceil(fontSize/20f);
+        previewTextArea.setScrollLeft(0.0);
+        if (scrollEvent.getDeltaY() < 0 && fontSize+change <= 700) {
+            previewTextArea.setScrollTop(Double.MAX_VALUE);
+            fontSize += change;
+        } else if (scrollEvent.getDeltaY() > 0 && fontSize-change >= 6) {
+            previewTextArea.setScrollTop(0.0);
+            fontSize -= change;
         }
-        previewTextArea.setScrollTop(0);
+        previewTextArea.setFont(Font.font("Consolas Bold", fontSize*.1));
     }
 
     private static int setBit(int bit, int target) {

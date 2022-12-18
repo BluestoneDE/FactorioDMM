@@ -14,7 +14,7 @@ public class Main extends Application {
         primaryStage.setTitle("Factorio Display Math Machine");
         primaryStage.getIcons().add(new Image("/fdmm.png"));
         primaryStage.setMinWidth(440);
-        primaryStage.setMinHeight(370);
+        primaryStage.setMinHeight(400);
         primaryStage.show();
     }
 
