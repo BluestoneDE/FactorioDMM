@@ -82,7 +82,8 @@ public class BitGIFGeneratorController {
             substationOffsetX.setDisable(false);
             substationOffsetY.setDisable(false);
             brightnessSlider.setDisable(false);
-            pictureListView.setOnMouseClicked(event -> updatePreview());
+            pictureListView.setOnMousePressed(event -> updatePreview());
+            pictureListView.setOnKeyPressed(event -> updatePreview());
             pictureListView.setOnKeyReleased(event -> updatePreview());
         }
         width = (int) image.getWidth();
@@ -93,12 +94,15 @@ public class BitGIFGeneratorController {
         previewWidth.setText("Width: " + width + "px");
         previewHeight.setText("Height: " + height + "px");
         fontSize = 90;
+        pictureListView.getFocusModel().focus(0);
+        pictureListView.getSelectionModel().select(0);
+        pictureListView.requestFocus();
         updatePreview();
     }
 
     @FXML
     private void gif(File file) {
-        if (pictureList.size() != 0) pictureList.clear();//Clear for import
+        if (pictureList.size() != 0) pictureList.clear(); //Clear for import
         try {
             DecodedGif decodedGif = GifDecoder.DecodeGif(file);
             for (factorio.decoders.GifDecoder.BufferedImageWithDelay img : decodedGif.Images) {
@@ -337,9 +341,9 @@ public class BitGIFGeneratorController {
         copyMode = false;
         brightness = brightnessSlider.getValue();
         StringBuilder previewText = new StringBuilder();
+        Image image = new Image(pictureListView.getFocusModel().getFocusedItem().toURI().toString());
+        PixelReader pixelReader = image.getPixelReader();
         new Thread(() -> {
-            Image image = new Image(pictureList.get(pictureList.indexOf(pictureListView.getFocusModel().getFocusedItem())).toURI().toString());
-            PixelReader pixelReader = image.getPixelReader();
             for (int readY = 0; readY < height; readY++) {
                 for (int readX = 0; readX < width; readX++) {
                     int subY = height - readY + substationOffsetY.getValue() + 18, subX = width - readX + substationOffsetX.getValue() + 18;

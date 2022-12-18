@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            style="-fx-background-color: #444;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="factorio.gui.BitGIFGeneratorController" stylesheets="/style.css">
+            style="-fx-background-color: #444;" stylesheets="/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="factorio.gui.BitGIFGeneratorController">
     <GridPane hgap="10.0" vgap="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
               AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
         <columnConstraints>
@@ -22,8 +23,8 @@
             <RowConstraints prefHeight="20.0"/>
             <RowConstraints prefHeight="40.0"/>
         </rowConstraints>
-        <Label alignment="CENTER" contentDisplay="RIGHT" text="Factorio Display Math Machine" textFill="WHITE"
-               GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" styleClass="title">
+        <Label alignment="CENTER" contentDisplay="RIGHT" styleClass="title" text="Factorio Display Math Machine"
+               textFill="WHITE" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER">
             <graphic>
                 <Label text="v1.1" textFill="WHITE"/>
             </graphic>
@@ -37,25 +38,28 @@
                   nodeOrientation="RIGHT_TO_LEFT" GridPane.rowIndex="2"/>
         <Label fx:id="previewWidth" text="Width" textFill="WHITE" GridPane.rowIndex="3"/>
         <Label fx:id="previewHeight" text="Height" textFill="WHITE" GridPane.rowIndex="4"/>
-        <CheckBox fx:id="substationsCheckbox" disable="true" mnemonicParsing="false" onAction="#toggleOffsets"
-                  selected="true" text="Substations" textFill="WHITE" GridPane.rowIndex="5" minWidth="-Infinity"/>
+        <CheckBox fx:id="substationsCheckbox" disable="true" minWidth="-Infinity" mnemonicParsing="false"
+                  onAction="#toggleOffsets" selected="true" text="Substations" textFill="WHITE" GridPane.rowIndex="5"/>
         <HBox alignment="CENTER_LEFT" spacing="6.0" GridPane.rowIndex="6">
-            <Spinner fx:id="substationOffsetX" onMouseClicked="#updatePreview" disable="true" minWidth="0.0">
+            <Spinner fx:id="substationOffsetX" disable="true" minWidth="0.0" onMousePressed="#updatePreview"
+                     onMouseReleased="#updatePreview">
                 <valueFactory>
-                    <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="1"
-                                                                    min="-9" max="8"/>
+                    <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="1" max="8"
+                                                                    min="-9"/>
                 </valueFactory>
             </Spinner>
-            <Spinner fx:id="substationOffsetY" onMouseClicked="#updatePreview" disable="true" minWidth="0.0">
+            <Spinner fx:id="substationOffsetY" disable="true" minWidth="0.0" onMousePressed="#updatePreview"
+                     onMouseReleased="#updatePreview">
                 <valueFactory>
-                    <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="-8"
-                                                                    min="-8" max="9"/>
+                    <SpinnerValueFactory.IntegerSpinnerValueFactory amountToStepBy="1" initialValue="-8" max="9"
+                                                                    min="-8"/>
                 </valueFactory>
             </Spinner>
         </HBox>
         <Slider fx:id="brightnessSlider" blockIncrement="1.0" disable="true" majorTickUnit="0.25" max="1.0"
                 maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minorTickCount="4"
-                onMouseDragged="#updatePreview" showTickMarks="true" value="0.5" GridPane.rowIndex="7"/>
+                onMouseDragged="#updatePreview" onMouseReleased="#updatePreview" showTickMarks="true" value="0.5"
+                GridPane.rowIndex="7"/>
         <Button fx:id="mathButton" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                 mnemonicParsing="false" onAction="#math" text="do math" GridPane.rowIndex="8"/>
     </GridPane>
