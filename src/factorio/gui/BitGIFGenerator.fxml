@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             style="-fx-background-color: #444;" stylesheets="/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="factorio.gui.BitGIFGeneratorController">
@@ -26,7 +25,7 @@
         <Label alignment="CENTER" contentDisplay="RIGHT" styleClass="title" text="Factorio Display Math Machine"
                textFill="WHITE" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER">
             <graphic>
-                <Label text="v1.1" textFill="WHITE"/>
+                <Label text="v1.2" textFill="WHITE"/>
             </graphic>
         </Label>
         <TextArea fx:id="previewTextArea" editable="false" maxHeight="1.7976931348623157E308"
@@ -35,7 +34,8 @@
         <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
                 onAction="#open" text="open files" GridPane.rowIndex="1"/>
         <ListView fx:id="pictureListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                  nodeOrientation="RIGHT_TO_LEFT" GridPane.rowIndex="2"/>
+                  nodeOrientation="RIGHT_TO_LEFT" onKeyReleased="#updatePreview" onMousePressed="#updatePreview"
+                  GridPane.rowIndex="2"/>
         <Label fx:id="previewWidth" text="Width" textFill="WHITE" GridPane.rowIndex="3"/>
         <Label fx:id="previewHeight" text="Height" textFill="WHITE" GridPane.rowIndex="4"/>
         <CheckBox fx:id="substationsCheckbox" disable="true" minWidth="-Infinity" mnemonicParsing="false"

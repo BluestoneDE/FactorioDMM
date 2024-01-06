@@ -1,43 +1,49 @@
 package factorio.object;
 
+import com.google.gson.annotations.Expose;
+
 public final class CircuitCondition {
-    public SignalID first_signal;
-    public SignalID second_signal;
+    @Expose
+    public Signal first_signal;
+    @Expose
+    public Signal second_signal;
+    @Expose
     public Integer constant;
+    @Expose
     public String comparator;
 
     public CircuitCondition() {
     }
 
-    public CircuitCondition(SignalID first_signal) {
-        this.first_signal = first_signal;
+    public CircuitCondition(Signal first_signal) {
+        setFirstSignal(first_signal);
     }
 
-    public CircuitCondition(SignalID first_signal, SignalID second_signal, String comparator) {
+    public CircuitCondition(Signal first_signal, Signal second_signal, String comparator) {
         this(first_signal);
-        this.second_signal = second_signal;
-        this.comparator = comparator;
+        setSecondSignal(second_signal);
+        setComparator(comparator);
     }
 
-    public CircuitCondition(SignalID first_signal, Integer constant, String comparator) {
+    public CircuitCondition(Signal first_signal, Integer constant, String comparator) {
         this(first_signal);
-        this.constant = constant;
-        this.comparator = comparator;
+        setConstant(constant);
+        setComparator(comparator);
     }
 
-    public SignalID getFirstSignal() {
+    public Signal getFirstSignal() {
         return first_signal;
     }
 
-    public void setFirstSignal(SignalID first_signal) {
+    public void setFirstSignal(Signal first_signal) {
         this.first_signal = first_signal;
     }
 
-    public SignalID getSecondSignal() {
+    public Signal getSecondSignal() {
         return second_signal;
     }
 
-    public void setSecondSignal(SignalID second_signal) {
+    public void setSecondSignal(Signal second_signal) {
         this.second_signal = second_signal;
     }
 
