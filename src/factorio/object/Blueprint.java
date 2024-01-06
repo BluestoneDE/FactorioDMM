@@ -1,13 +1,20 @@
 package factorio.object;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 
 public final class Blueprint {
-    public final String item = "blueprint";
-    public String label;
-    public ArrayList<Entity> entities;
-    public Icon[] icons;
-    public long version;
+    @Expose
+    private final String item = "blueprint";
+    @Expose
+    private String label;
+    @Expose
+    private ArrayList<Entity> entities;
+    @Expose
+    private Icon[] icons;
+    @Expose
+    private long version;
 
     public Blueprint() {
     }
@@ -18,10 +25,10 @@ public final class Blueprint {
             Icon[] icons,
             long version
     ) {
-        this.label = label;
+        setLabel(label);
         setEntities(entities);
-        this.icons = icons;
-        this.version = version;
+        setIcons(icons);
+        setVersion(version);
     }
 
     public String getLabel() {

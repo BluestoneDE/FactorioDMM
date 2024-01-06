@@ -1,27 +1,39 @@
 package factorio.object;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 
-public final class Entity {
+public class Entity {
     private static int entity_count;
+    public final int previous_number, next_number;
+    @Expose
     public final int entity_number;
-    public String name;
-    public Position position;
-    public Integer direction;
-    public Float orientation;
-    public ControlBehaviour control_behavior;
-    public Connection connections;
-    public ArrayList<Integer> neighbours;
+    @Expose
+    private String name;
+    @Expose
+    private Position position;
+    @Expose
+    private Integer direction;
+    @Expose
+    private Float orientation;
+    @Expose
+    private ControlBehaviour control_behavior;
+    @Expose
+    private Connection connections;
+    @Expose
+    private ArrayList<Integer> neighbours;
 
     public Entity() {
-        entity_count ++;
-        this.entity_number = entity_count;
+        previous_number = entity_count;
+        entity_number = ++entity_count;
+        next_number = entity_count + 1;
     }
 
-    public Entity(String name, Position position) {
+    public Entity(String name, Float x, Float y) {
         this();
         setName(name);
-        setPosition(position);
+        setPosition(new Position(x, y));
     }
 
     public Entity(
@@ -31,12 +43,19 @@ public final class Entity {
             ControlBehaviour controlBehavior,
             Connection connections
             ) {
-        this(name, position);
+        this();
+        setName(name);
+        setPosition(position);
         setDirection(direction);
         setControlBehavior(controlBehavior);
         setConnections(connections);
     }
 
+    public static void resetEntityCount() {
+        Entity.entity_count = 0;
+    }
+
+    @Deprecated
     public static void setEntityCount(int entity_count) {
         Entity.entity_count = entity_count;
     }

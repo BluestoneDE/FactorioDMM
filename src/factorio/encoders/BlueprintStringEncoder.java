@@ -1,6 +1,6 @@
 package factorio.encoders;
 
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import factorio.object.Blueprint;
 import java.util.Base64;
 import java.util.zip.*;
@@ -21,7 +21,7 @@ public class BlueprintStringEncoder {
     }
 
     public BlueprintStringEncoder EncodeJson(){
-        _json = new Gson().toJson(_blueprint);
+        _json = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(_blueprint);
         _json = "{\"blueprint\":" + _json + "}";
         return this;
     }
@@ -40,9 +40,7 @@ public class BlueprintStringEncoder {
             _deflater.end();//Cleanup
         }
         _compressedData = new byte[length];
-        for(int i = 0; i < length; i++){
-            _compressedData[i] = oversized[i];
-        }
+        System.arraycopy(oversized, 0, _compressedData, 0, length);
         return this;
     }
 

@@ -1,63 +1,51 @@
-package factorio.object;
+package factorio.factory;
+
+import factorio.object.Icon;
+import factorio.object.Signal;
 
 import java.util.Arrays;
 
-public final class SignalID {
-    public String name;
-    public String type;
+public final class SignalLibrary {
 
-    public SignalID() {}
-
-    public SignalID(String name) {
-        if (Arrays.asList(virtuals).contains(name) || Arrays.asList(extraVirtuals).contains(name)) {
-            this.name = name;
-            this.type = "virtual";
-        } else if (Arrays.asList(items).contains(name)) {
-            this.name = name;
-            this.type = "item";
-        } else if (Arrays.asList(fluids).contains(name)) {
-            this.name = name;
-            this.type = "fluid";
-        }
+    public static boolean has(int pos) {
+        return pos < (virtual.length + item.length + fluid.length);
     }
 
-    public SignalID(String name, String type) {
-        this.name = name;
-        this.type = type;
+    public static boolean has(String name) {
+        return Arrays.asList(virtual).contains(name) || Arrays.asList(item).contains(name) || Arrays.asList(fluid).contains(name);
     }
 
-    public static boolean hasID(int pos) {
-        return pos < (virtuals.length + items.length + fluids.length);
-    }
-
-    public static SignalID getID(int pos) {
-        if (hasID(pos)) {
-            if (pos < virtuals.length) return new SignalID(virtuals[pos], "virtual");
-            pos -= virtuals.length;
-            if (pos < items.length) return new SignalID(items[pos], "item");
-            pos -= items.length;
-            if (pos < fluids.length) return new SignalID(fluids[pos], "fluid");
+    public static Signal get(int pos) {
+        if (has(pos)) {
+            if (pos < virtual.length) return new Signal(virtual[pos], "virtual");
+            pos -= virtual.length;
+            if (pos < item.length) return new Signal(item[pos], "item");
+            pos -= item.length;
+            if (pos < fluid.length) return new Signal(fluid[pos], "fluid");
         }
         return null;
     }
 
-    public String getName() {
-        return name;
+    public static Signal get(String name) {
+        return new Signal(name, findType(name));
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public static Icon[] getIcon(int pos) {
+        return new Icon[]{new Icon(1, SignalLibrary.get(pos))};
     }
 
-    public String getType() {
-        return type;
+    public static Icon[] getIcon(String name) {
+        return new Icon[]{new Icon(1, SignalLibrary.get(name))};
     }
 
-    public void setType(String type) {
-        this.type = type;
+    private static String findType(String name) {
+        if (Arrays.asList(virtual).contains(name) || Arrays.asList(extraVirtual).contains(name)) return "virtual";
+        else if (Arrays.asList(item).contains(name)) return "item";
+        else if (Arrays.asList(fluid).contains(name)) return "fluid";
+        return null;
     }
 
-    private static final String[] fluids = new String[]{
+    private static final String[] fluid = new String[]{
             "crude-oil",
             "fluid-unknown",
             "heavy-oil",
@@ -69,7 +57,7 @@ public final class SignalID {
             "water",
     };
 
-    private static final String[] extraVirtuals = new String[]{
+    private static final String[] extraVirtual = new String[]{
             "signal-anything",
             "signal-black",
             "signal-blue",
@@ -84,7 +72,7 @@ public final class SignalID {
             "signal-yellow",
     };
 
-    private static final String[] virtuals = new String[]{
+    private static final String[] virtual = new String[]{
             "signal-0",
             "signal-1",
             "signal-2",
@@ -126,7 +114,7 @@ public final class SignalID {
             "signal-info",
     };
 
-    private static final String[] items = new String[]{
+    private static final String[] item = new String[]{
             "accumulator",
             "advanced-circuit",
             "arithmetic-combinator",

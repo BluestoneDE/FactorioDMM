@@ -1,56 +1,64 @@
 package factorio.object;
 
+import com.google.gson.annotations.Expose;
+
 public final class DeciderCondition {
-    public SignalID first_signal;
-    public SignalID second_signal;
-    public Integer constant;
-    public String comparator;
-    public SignalID output_signal;
-    public boolean copy_count_from_input;
+    @Expose
+    private Signal first_signal;
+    @Expose
+    private Signal second_signal;
+    @Expose
+    private Integer constant;
+    @Expose
+    private String comparator;
+    @Expose
+    private Signal output_signal;
+    @Expose
+    private boolean copy_count_from_input;
 
     public DeciderCondition() {}
 
     public DeciderCondition(
-            SignalID first_signal,
-            SignalID second_signal,
+            Signal first_signal,
+            Signal second_signal,
             String comparator,
-            SignalID output_signal,
+            Signal output_signal,
             boolean copy_count_from_input
     ) {
-        this.first_signal = first_signal;
-        this.second_signal = second_signal;
-        this.comparator = comparator;
-        this.output_signal = output_signal;
-        this.copy_count_from_input = copy_count_from_input;
+        setFirstSignal(first_signal);
+        setSecondSignal(second_signal);
+        setComparator(comparator);
+        setOutputSignal(output_signal);
+        setCopyCountFromInput(copy_count_from_input);
     }
 
     public DeciderCondition(
-            SignalID first_signal,
+            Signal first_signal,
             Integer constant,
             String comparator,
-            SignalID output_signal,
+            Signal output_signal,
             boolean copy_count_from_input
     ) {
-        this.first_signal = first_signal;
-        this.constant = constant;
-        this.comparator = comparator;
-        this.output_signal = output_signal;
-        this.copy_count_from_input = copy_count_from_input;
+        setFirstSignal(first_signal);
+        setConstant(constant);
+        setComparator(comparator);
+        setOutputSignal(output_signal);
+        setCopyCountFromInput(copy_count_from_input);
     }
 
-    public SignalID getFirstSignal() {
+    public Signal getFirstSignal() {
         return first_signal;
     }
 
-    public void setFirstSignal(SignalID first_signal) {
+    public void setFirstSignal(Signal first_signal) {
         this.first_signal = first_signal;
     }
 
-    public SignalID getSecondSignal() {
+    public Signal getSecondSignal() {
         return second_signal;
     }
 
-    public void setSecondSignal(SignalID second_signal) {
+    public void setSecondSignal(Signal second_signal) {
         this.second_signal = second_signal;
     }
 
@@ -70,11 +78,11 @@ public final class DeciderCondition {
         this.comparator = comparator;
     }
 
-    public SignalID getOutputSignal() {
+    public Signal getOutputSignal() {
         return output_signal;
     }
 
-    public void setOutputSignal(SignalID output_signal) {
+    public void setOutputSignal(Signal output_signal) {
         this.output_signal = output_signal;
     }
 

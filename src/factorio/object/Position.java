@@ -1,14 +1,18 @@
 package factorio.object;
 
+import com.google.gson.annotations.Expose;
+
 public final class Position {
-    public Float x;
-    public Float y;
+    @Expose
+    private Float x;
+    @Expose
+    private Float y;
 
     public Position() {}
 
     public Position(Float x, Float  y) {
-        this.x = x;
-        this.y = y;
+        setX(x);
+        setY(y);
     }
 
     public Float getX() {
