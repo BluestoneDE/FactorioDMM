@@ -118,6 +118,7 @@ public class BitGIFGeneratorController {
     }
 
     private void select(int index) {
+        pictureListView.getFocusModel().focus(index);
         pictureListView.getSelectionModel().select(index);
         pictureListView.scrollTo(index);
     }
@@ -234,7 +235,7 @@ public class BitGIFGeneratorController {
     }
 
     private ArrayList<Entity> calculateSubstations() {
-        return new ArrayList<>() {{
+        return new ArrayList<Entity>() {{
             for (int subX = substationOffsetX.getValue() + width; subX > -9; subX -= 18)
                 for (int subY = substationOffsetY.getValue() + height; subY > -9; subY -= 18) {
                     Entity substation = buildSubstation(subX, subY);
@@ -271,7 +272,7 @@ public class BitGIFGeneratorController {
 
     private ArrayList<Entity> calculateCombinators(ArrayList<Integer> signalValues, int column) {
         float widthOffset = column - width;
-        return new ArrayList<>() {{
+        return new ArrayList<Entity>() {{
             ArithmeticCombinator arithmeticCombinator = new ArithmeticCombinator(widthOffset - .5F, 1F);
             add(arithmeticCombinator.setCondition("signal-each", "signal-black", "<<", "signal-each")
                     .addRedInputConnection(arithmeticCombinator.previous_number)
