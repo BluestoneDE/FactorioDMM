@@ -22,6 +22,7 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
+import java.awt.Robot;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -96,8 +97,21 @@ public class BitGIFGeneratorController {
             brightnessSlider.setDisable(false);
             pictureListView.setOnKeyPressed(event -> {
                 if (event.getCode().isArrowKey()) {
-                    if (event.getCode() == KeyCode.DOWN && previousIndex == pictureList.size() - 1) select(0);
-                    else if (event.getCode() == KeyCode.UP && previousIndex == 0) select(pictureList.size() - 1);
+                    if (event.getCode() == KeyCode.DOWN) {
+                        if (previousIndex == pictureList.size() - 1) {
+                            select(0);
+                            /* In Java 1.8 the list updates after the event, so we
+                               need to simulate more key presses to get the correct index. */
+                            simulateKeyPress(38);
+                        } else simulateKeyPress(37);
+                        return;
+                    } else if (event.getCode() == KeyCode.UP) {
+                        if (previousIndex == 0) {
+                            select(pictureList.size() - 1);
+                            simulateKeyPress(40);
+                        } else simulateKeyPress(37);
+                        return;
+                    }
                     previousIndex = pictureListView.getFocusModel().getFocusedIndex();
                     updatePreview();
                 }
@@ -117,8 +131,14 @@ public class BitGIFGeneratorController {
         updatePreview();
     }
 
+    private void simulateKeyPress(int key) {
+        try {
+            new Robot().keyPress(key);
+        } catch (Exception ignored) {
+        }
+    }
+
     private void select(int index) {
-        pictureListView.getFocusModel().focus(index);
         pictureListView.getSelectionModel().select(index);
         pictureListView.scrollTo(index);
     }
