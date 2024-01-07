@@ -284,7 +284,7 @@ public enum Signal {
     ARTILLERY_TARGETING_REMOTE("artillery-targeting-remote", "item"),
     RADAR("radar", "item"),
 
-    // editor items
+    // editor
     LOADER("loader", "item"),
     FAST_LOADER("fast-loader", "item"),
     EXPRESS_LOADER("express-loader", "item"),
@@ -315,7 +315,7 @@ public enum Signal {
     SIMPLE_ENTITY_WITH_OWNER("simple-entity-with-owner", "item"),
     BURNER_GENERATOR("burner-generator", "item"),
 
-    // invisible
+    // unknown
     ITEM_UNKNOWN("item-unknown", "item"),
     FLUID_UNKNOWN("fluid-unknown", "fluid");
 
