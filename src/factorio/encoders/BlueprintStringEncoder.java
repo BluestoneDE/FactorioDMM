@@ -29,7 +29,6 @@ public class BlueprintStringEncoder {
                 .excludeFieldsWithoutExposeAnnotation().disableHtmlEscaping()
                 .create().toJson(_blueprint);
         _json = "{\"blueprint\":" + _json + "}";
-        System.out.println(_json);
         return this;
     }
 

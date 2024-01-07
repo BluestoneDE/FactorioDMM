@@ -28,7 +28,7 @@ public final class SignalLibrary {
     }
 
     public static Icon[] getIcons(int... positions) {
-        return IntStream.range(0, positions.length).filter(i -> has(positions[i])).mapToObj(i -> new Icon(i + 1, get(positions[i]))).toArray(Icon[]::new);
+        return IntStream.range(0, positions.length).filter(i -> has(positions[i] + 12)).mapToObj(i -> new Icon(i + 1, get(positions[i] + 12))).toArray(Icon[]::new);
     }
 
     public static Icon[] getIcons(String... names) {

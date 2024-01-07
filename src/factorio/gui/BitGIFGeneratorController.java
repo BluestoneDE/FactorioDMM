@@ -203,13 +203,12 @@ public class BitGIFGeneratorController {
             }
             placedCombinators = false;
         }
-        final int finalLastLamp = lastLamp;
         if (!signalValues.isEmpty()) entities.addAll(calculateCombinators(signalValues, width));
         //frame control combinator
         entities.add(new ConstantCombinator(.5F, .5F)
                 .addFilter(Signal.BLACK, 0, 1)
                 .addFilter(Signal.WHITE, 1, 11)
-                .addRedConnection(finalLastLamp));
+                .addRedConnection(lastLamp));
         //blueprint
         Blueprint blueprint = new Blueprint("FactorioDMM-output", entities, SignalLibrary.getIcons(Signal.SMALL_LAMP), 281479271743489L);
         previewTextArea.setFont(Font.font("Consolas Bold", 9.0));
@@ -243,11 +242,9 @@ public class BitGIFGeneratorController {
                     add(substation);
                     //remove lights
                     if (subX <= width && subY <= height) {
-                        if (subX < width) {
-                            if (subX >= 0 && subY >= 0) {
-                                arrangement[subY][subX] = null;
-                                if (subY - 1 >= 0) arrangement[subY - 1][subX] = null;
-                            }
+                        if (subX < width) if (subX >= 0 && subY >= 0) {
+                            arrangement[subY][subX] = null;
+                            if (subY - 1 >= 0) arrangement[subY - 1][subX] = null;
                         }
                         if (subX - 1 >= 0 && subY >= 0) {
                             arrangement[subY][subX - 1] = null;
