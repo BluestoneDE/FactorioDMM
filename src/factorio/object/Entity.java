@@ -10,19 +10,19 @@ public class Entity {
     @Expose
     public final int entity_number;
     @Expose
-    private String name;
+    protected String name;
     @Expose
-    private Position position;
+    protected Position position;
     @Expose
-    private Integer direction;
+    protected Integer direction;
     @Expose
-    private Float orientation;
+    protected Float orientation;
     @Expose
-    private ControlBehaviour control_behavior;
+    protected ControlBehaviour control_behavior;
     @Expose
-    private Connection connections;
+    protected Connection connections;
     @Expose
-    private ArrayList<Integer> neighbours;
+    protected ArrayList<Integer> neighbours;
 
     public Entity() {
         previous_number = entity_count;
@@ -30,25 +30,23 @@ public class Entity {
         next_number = entity_count + 1;
     }
 
-    public Entity(String name, Float x, Float y) {
-        this();
-        setName(name);
-        setPosition(new Position(x, y));
-    }
-
     public Entity(
             String name,
             Position position,
             Integer direction,
+            Float orientation,
             ControlBehaviour controlBehavior,
-            Connection connections
+            Connection connections,
+            ArrayList<Integer> neighbours
             ) {
         this();
-        setName(name);
-        setPosition(position);
-        setDirection(direction);
-        setControlBehavior(controlBehavior);
-        setConnections(connections);
+        this.name = name;
+        this.position = position;
+        this.direction = direction;
+        this.orientation = orientation;
+        this.control_behavior = controlBehavior;
+        this.connections = connections;
+        this.neighbours = neighbours;
     }
 
     public static void resetEntityCount() {
@@ -62,63 +60,5 @@ public class Entity {
 
     public static int getEntityCount() {
         return entity_count;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public Integer getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Integer direction) {
-        this.direction = direction;
-    }
-
-    public Float getOrientation() {
-        return orientation;
-    }
-
-    public void setOrientation(Float orientation) {
-        this.orientation = orientation;
-    }
-
-    public Connection getConnections() {
-        return connections;
-    }
-
-    public void setConnections(Connection connections) {
-        this.connections = connections;
-    }
-
-    public ControlBehaviour getControlBehavior() {
-        return control_behavior;
-    }
-
-    public void setControlBehavior(ControlBehaviour control_behaviour) {
-        this.control_behavior = control_behaviour;
-    }
-
-    public ArrayList<Integer> getNeighbours() {
-        return neighbours;
-    }
-
-    public void setNeighbours(ArrayList<Integer> neighbours) {
-        this.neighbours = new ArrayList<>() {{
-            addAll(neighbours);
-        }};
     }
 }

@@ -8,13 +8,13 @@ public final class Blueprint {
     @Expose
     private final String item = "blueprint";
     @Expose
-    private String label;
+    public String label;
     @Expose
-    private ArrayList<Entity> entities;
+    public ArrayList<Entity> entities;
     @Expose
-    private Icon[] icons;
+    public Icon[] icons;
     @Expose
-    private long version;
+    public long version;
 
     public Blueprint() {
     }
@@ -25,43 +25,9 @@ public final class Blueprint {
             Icon[] icons,
             long version
     ) {
-        setLabel(label);
-        setEntities(entities);
-        setIcons(icons);
-        setVersion(version);
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
         this.label = label;
-    }
-
-    public ArrayList<Entity> getEntities() {
-        return entities;
-    }
-
-    public void setEntities(ArrayList<Entity> entities) {
-        this.entities = new ArrayList<>() {{
-            addAll(entities);
-        }};
-    }
-
-    public Icon[] getIcons() {
-        return icons;
-    }
-
-    public void setIcons(Icon[] icons) {
+        this.entities = entities;
         this.icons = icons;
-    }
-
-    public long getVersion() {
-        return version;
-    }
-
-    public void setVersion(long version) {
         this.version = version;
     }
 }

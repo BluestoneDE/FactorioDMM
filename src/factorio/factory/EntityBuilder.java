@@ -10,15 +10,17 @@ import java.util.ArrayList;
 public class EntityBuilder {
     public final int entity_number = Entity.getEntityCount() + 1;
     public final int next_number = Entity.getEntityCount() + 2, previous_number = Entity.getEntityCount();
-    private String name = "wooden-chest";
-    private Position position = new Position(0f,0f);
-    private Integer direction;
-    private Float orientation;
-    private ControlBehaviour controlBehavior;
-    private Connection connections;
-    private ArrayList<Integer> neighbours;
+    public String name = "wooden-chest";
+    public Position position = new Position(0f, 0f);
+    public Integer direction;
+    public Float orientation;
+    public ControlBehaviour controlBehavior;
+    public Connection connections;
+    public ArrayList<Integer> neighbours;
 
-    public EntityBuilder() {}
+    public EntityBuilder() {
+    }
+
     public EntityBuilder(String name, Position position) {
         setName(name).setPosition(position);
     }
@@ -28,15 +30,7 @@ public class EntityBuilder {
     }
 
     public Entity build() {
-        Entity entity = new Entity();
-        entity.setName(name);
-        entity.setPosition(position);
-        if (direction != null) entity.setDirection(direction);
-        if (orientation != null) entity.setOrientation(orientation);
-        if (controlBehavior != null) entity.setControlBehavior(controlBehavior);
-        if (connections != null) entity.setConnections(connections);
-        if (neighbours != null) entity.setNeighbours(neighbours);
-        return entity;
+        return new Entity(name, position, direction, orientation, controlBehavior, connections, neighbours);
     }
 
     public EntityBuilder setName(String name) {

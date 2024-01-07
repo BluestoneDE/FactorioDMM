@@ -209,7 +209,7 @@ public class BitGIFGeneratorController {
                 .addFilter("signal-white", 1, 11)
                 .addRedConnection(finalLastLamp));
         //blueprint
-        Blueprint blueprint = new Blueprint("FactorioDMM-output", entities, SignalLibrary.getIcon("small-lamp"), 281479271743489L);
+        Blueprint blueprint = new Blueprint("FactorioDMM-output", entities, SignalLibrary.getIcons("small-lamp"), 281479271743489L);
         previewTextArea.setFont(Font.font("Consolas Bold", 9.0));
         previewTextArea.setText(BlueprintStringEncoder.Encode(blueprint));
         previewTextArea.setWrapText(true);

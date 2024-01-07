@@ -4,6 +4,7 @@ import factorio.object.Icon;
 import factorio.object.Signal;
 
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 public final class SignalLibrary {
 
@@ -22,6 +23,7 @@ public final class SignalLibrary {
             if (pos < item.length) return new Signal(item[pos], "item");
             pos -= item.length;
             if (pos < fluid.length) return new Signal(fluid[pos], "fluid");
+            if (pos < fluids.values().length) return new Signal(fluids.values()[pos].name, "fluid");
         }
         return null;
     }
@@ -30,12 +32,12 @@ public final class SignalLibrary {
         return new Signal(name, findType(name));
     }
 
-    public static Icon[] getIcon(int pos) {
-        return new Icon[]{new Icon(1, SignalLibrary.get(pos))};
+    public static Icon[] getIcons(int ... positions) {
+        return IntStream.range(0, positions.length).filter(i -> has(positions[i])).mapToObj(i -> new Icon(i + 1, get(positions[i]))).toArray(Icon[]::new);
     }
 
-    public static Icon[] getIcon(String name) {
-        return new Icon[]{new Icon(1, SignalLibrary.get(name))};
+    public static Icon[] getIcons(String ... names) {
+        return IntStream.range(0, names.length).filter(i -> has(names[i])).mapToObj(i -> new Icon(i + 1, get(names[i]))).toArray(Icon[]::new);
     }
 
     private static String findType(String name) {
@@ -43,6 +45,27 @@ public final class SignalLibrary {
         else if (Arrays.asList(item).contains(name)) return "item";
         else if (Arrays.asList(fluid).contains(name)) return "fluid";
         return null;
+    }
+
+    public enum fluids {
+        CRUDE_OIL("crude-oil"),
+        FLUID_UNKNOWN("fluid-unknown"),
+        HEAVY_OIL("heavy-oil"),
+        LIGHT_OIL("light-oil"),
+        LUBRICANT("lubricant"),
+        PETROLEUM_GAS("petroleum-gas"),
+        STEAM("steam"),
+        SULFURIC_ACID("sulfuric-acid"),
+        WATER("water");
+        public final String name;
+        fluids(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 
     private static final String[] fluid = new String[]{
