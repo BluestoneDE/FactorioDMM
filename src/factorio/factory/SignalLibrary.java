@@ -23,7 +23,6 @@ public final class SignalLibrary {
             if (pos < item.length) return new Signal(item[pos], "item");
             pos -= item.length;
             if (pos < fluid.length) return new Signal(fluid[pos], "fluid");
-            if (pos < fluids.values().length) return new Signal(fluids.values()[pos].name, "fluid");
         }
         return null;
     }
@@ -45,27 +44,6 @@ public final class SignalLibrary {
         else if (Arrays.asList(item).contains(name)) return "item";
         else if (Arrays.asList(fluid).contains(name)) return "fluid";
         return null;
-    }
-
-    public enum fluids {
-        CRUDE_OIL("crude-oil"),
-        FLUID_UNKNOWN("fluid-unknown"),
-        HEAVY_OIL("heavy-oil"),
-        LIGHT_OIL("light-oil"),
-        LUBRICANT("lubricant"),
-        PETROLEUM_GAS("petroleum-gas"),
-        STEAM("steam"),
-        SULFURIC_ACID("sulfuric-acid"),
-        WATER("water");
-        public final String name;
-        fluids(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
     }
 
     private static final String[] fluid = new String[]{
