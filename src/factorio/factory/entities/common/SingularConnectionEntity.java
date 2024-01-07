@@ -1,6 +1,5 @@
 package factorio.factory.entities.common;
 
-import factorio.factory.entities.ConstantCombinator;
 import factorio.object.*;
 
 import java.util.ArrayList;

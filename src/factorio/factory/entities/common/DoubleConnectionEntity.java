@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public abstract class DoubleConnectionEntity<E> extends Entity {
 
     private void setupConnections(boolean red, boolean input) {
-        if (connections == null) connections = new Connection(null ,null);
+        if (connections == null) connections = new Connection(null, null);
         if (input) {
             if (connections.p1 == null) connections.p1 = new ConnectionPoint();
             if (red) {
