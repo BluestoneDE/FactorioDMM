@@ -1,9 +1,12 @@
 package factorio.encoders;
 
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import factorio.object.Blueprint;
+import factorio.object.Signal;
+
+import java.lang.reflect.Type;
 import java.util.Base64;
-import java.util.zip.*;
+import java.util.zip.Deflater;
 
 public class BlueprintStringEncoder {
     private final Deflater _deflater;
@@ -21,7 +24,10 @@ public class BlueprintStringEncoder {
     }
 
     public BlueprintStringEncoder EncodeJson(){
-        _json = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(_blueprint);
+        _json = new GsonBuilder()
+                .registerTypeAdapter(Signal.class, new SignalSerializer())
+                .excludeFieldsWithoutExposeAnnotation().disableHtmlEscaping()
+                .create().toJson(_blueprint);
         _json = "{\"blueprint\":" + _json + "}";
         return this;
     }
@@ -57,5 +63,15 @@ public class BlueprintStringEncoder {
 
     public static String Encode(Blueprint blueprintToEncode){
         return new BlueprintStringEncoder(blueprintToEncode).EncodeJson().Gzip().Base64Encode().Finalize();
+    }
+
+    private static class SignalSerializer implements JsonSerializer<Signal> {
+        @Override
+        public JsonElement serialize(Signal src, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject result = new JsonObject();
+            result.addProperty("name", src.name);
+            result.addProperty("type", src.type);
+            return result;
+        }
     }
 }

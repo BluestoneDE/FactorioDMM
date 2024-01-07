@@ -11,22 +11,22 @@ import java.util.ArrayList;
 public abstract class SingularConnectionEntity<E> extends Entity {
 
     private void setupConnections(boolean red) {
-        if (getConnections() == null) setConnections(new Connection(new ConnectionPoint()));
+        if (connections == null) connections = new Connection(new ConnectionPoint());
         if (red) {
-            if (getConnections().get1().getRed() == null) getConnections().get1().setRed(new ArrayList<>());
-        } else if (getConnections().get1().getGreen() == null) getConnections().get1().setGreen(new ArrayList<>());
+            if (connections.p1.red == null) connections.p1.red = new ArrayList<>();
+        } else if (connections.p1.green == null) connections.p1.green = new ArrayList<>();
     }
 
     // using ConnectionData
     public E addRedConnection(ConnectionData connectionData) {
         setupConnections(true);
-        getConnections().get1().getRed().add(connectionData);
+        connections.p1.red.add(connectionData);
         return (E) this;
     }
 
     public E addGreenConnection(ConnectionData connectionData) {
         setupConnections(false);
-        getConnections().get1().getGreen().add(connectionData);
+        connections.p1.green.add(connectionData);
         return (E) this;
     }
 

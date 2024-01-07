@@ -10,43 +10,43 @@ import java.util.ArrayList;
 @SuppressWarnings("unchecked")
 public abstract class DoubleConnectionEntity<E> extends Entity {
 
-    private void setupConnections(boolean input, boolean red) {
-        if (getConnections() == null) setConnections(new Connection());
+    private void setupConnections(boolean red, boolean input) {
+        if (connections == null) connections = new Connection(null ,null);
         if (input) {
-            if (getConnections().get1() == null) getConnections().set1(new ConnectionPoint());
+            if (connections.p1 == null) connections.p1 = new ConnectionPoint();
             if (red) {
-                if (getConnections().get1().getRed() == null) getConnections().get1().setRed(new ArrayList<>());
-            } else if (getConnections().get1().getGreen() == null) getConnections().get1().setGreen(new ArrayList<>());
+                if (connections.p1.red == null) connections.p1.red = new ArrayList<>();
+            } else if (connections.p1.green == null) connections.p1.green = new ArrayList<>();
         } else {
-            if (getConnections().get2() == null) getConnections().set2(new ConnectionPoint());
+            if (connections.p2 == null) connections.p2 = new ConnectionPoint();
             if (red) {
-                if (getConnections().get2().getRed() == null) getConnections().get2().setRed(new ArrayList<>());
-            } else if (getConnections().get2().getGreen() == null) getConnections().get2().setGreen(new ArrayList<>());
+                if (connections.p2.red == null) connections.p2.red = new ArrayList<>();
+            } else if (connections.p2.green == null) connections.p2.green = new ArrayList<>();
         }
     }
 
     // using ConnectionData
     public E addRedInputConnection(ConnectionData connectionData) {
         setupConnections(true, true);
-        getConnections().get1().getRed().add(connectionData);
+        connections.p1.red.add(connectionData);
         return (E) this;
     }
 
     public E addRedOutputConnection(ConnectionData connectionData) {
-        setupConnections(false, true);
-        getConnections().get2().getRed().add(connectionData);
+        setupConnections(true, false);
+        connections.p2.red.add(connectionData);
         return (E) this;
     }
 
     public E addGreenInputConnection(ConnectionData connectionData) {
-        setupConnections(true, false);
-        getConnections().get1().getGreen().add(connectionData);
+        setupConnections(false, true);
+        connections.p1.green.add(connectionData);
         return (E) this;
     }
 
     public E addGreenOutputConnection(ConnectionData connectionData) {
         setupConnections(false, false);
-        getConnections().get2().getGreen().add(connectionData);
+        connections.p2.green.add(connectionData);
         return (E) this;
     }
 

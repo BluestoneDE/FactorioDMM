@@ -1,7 +1,8 @@
 package factorio.decoders.GifDecoder;
 
-
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class GifDecoder {
     public static DecodedGif DecodeGif(File file) throws IOException{

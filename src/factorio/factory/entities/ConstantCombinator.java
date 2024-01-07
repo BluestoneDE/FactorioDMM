@@ -1,8 +1,10 @@
 package factorio.factory.entities;
 
-import factorio.factory.SignalLibrary;
 import factorio.factory.entities.common.SingularConnectionEntity;
-import factorio.object.*;
+import factorio.object.ControlBehaviour;
+import factorio.object.Filter;
+import factorio.object.Position;
+import factorio.object.Signal;
 
 import java.util.ArrayList;
 
@@ -11,12 +13,12 @@ public final class ConstantCombinator extends SingularConnectionEntity<ConstantC
 
     public ConstantCombinator() {
         super();
-        setName("constant-combinator");
+        name = Signal.CONSTANT_COMBINATOR.name;
     }
 
     public ConstantCombinator(Position position) {
         this();
-        setPosition(position);
+        this.position = position;
     }
 
     public ConstantCombinator(Float x, Float y) {
@@ -25,26 +27,22 @@ public final class ConstantCombinator extends SingularConnectionEntity<ConstantC
 
     public ConstantCombinator(Float x, Float y, int direction) {
         this(x, y);
-        setDirection(direction);
+        this.direction = direction;
     }
 
     public ConstantCombinator setFilters(ArrayList<Filter> filters) {
-        if (getControlBehavior() == null) setControlBehavior(new ControlBehaviour(filters));
-        else getControlBehavior().setFilters(filters);
+        if (control_behavior == null) control_behavior = new ControlBehaviour(filters);
+        else control_behavior.filters = filters;
         return this;
     }
 
     public ConstantCombinator addFilter(Filter filter) {
-        if (getControlBehavior() == null) setFilters(new ArrayList<>());
-        getControlBehavior().getFilters().add(filter);
+        if (control_behavior == null) setFilters(new ArrayList<>());
+        control_behavior.filters.add(filter);
         return this;
     }
+
     public ConstantCombinator addFilter(Signal signal, int count, int index) {
         return addFilter(new Filter(signal, count, index));
-    }
-
-    // using SignalLibrary with String
-    public ConstantCombinator addFilter(String signal, int count, int index) {
-        return addFilter(SignalLibrary.get(signal), count, index);
     }
 }
