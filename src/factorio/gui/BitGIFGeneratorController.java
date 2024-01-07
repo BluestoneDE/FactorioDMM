@@ -10,6 +10,8 @@ import factorio.factory.entities.ConstantCombinator;
 import factorio.factory.entities.SmallLamp;
 import factorio.object.Blueprint;
 import factorio.object.Entity;
+import factorio.object.Operation;
+import factorio.object.Signal;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -205,11 +207,11 @@ public class BitGIFGeneratorController {
         if (!signalValues.isEmpty()) entities.addAll(calculateCombinators(signalValues, width));
         //frame control combinator
         entities.add(new ConstantCombinator(.5F, .5F)
-                .addFilter("signal-black", 0, 1)
-                .addFilter("signal-white", 1, 11)
+                .addFilter(Signal.BLACK, 0, 1)
+                .addFilter(Signal.WHITE, 1, 11)
                 .addRedConnection(finalLastLamp));
         //blueprint
-        Blueprint blueprint = new Blueprint("FactorioDMM-output", entities, SignalLibrary.getIcons("small-lamp"), 281479271743489L);
+        Blueprint blueprint = new Blueprint("FactorioDMM-output", entities, SignalLibrary.getIcons(Signal.SMALL_LAMP), 281479271743489L);
         previewTextArea.setFont(Font.font("Consolas Bold", 9.0));
         previewTextArea.setText(BlueprintStringEncoder.Encode(blueprint));
         previewTextArea.setWrapText(true);
@@ -273,7 +275,7 @@ public class BitGIFGeneratorController {
         float widthOffset = column - width;
         return new ArrayList<>() {{
             ArithmeticCombinator arithmeticCombinator = new ArithmeticCombinator(widthOffset - .5F, 1F);
-            add(arithmeticCombinator.setCondition("signal-each", "signal-black", "<<", "signal-each")
+            add(arithmeticCombinator.setCondition(Signal.EACH, Signal.BLACK, Operation.LEFT_SHIFT, Signal.EACH)
                     .addRedInputConnection(arithmeticCombinator.previous_number)
                     .addGreenInputConnection(arithmeticCombinator.next_number)
                     .addGreenOutputConnection(arithmeticCombinator.previous_number));

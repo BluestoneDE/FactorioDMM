@@ -8,14 +8,12 @@ import factorio.object.Signal;
 
 import java.util.ArrayList;
 
-import static factorio.factory.SignalLibrary.get;
-
 public final class ConstantCombinator extends SingularConnectionEntity<ConstantCombinator> {
     public final static int maxSignals = 20;
 
     public ConstantCombinator() {
         super();
-        name = "constant-combinator";
+        name = Signal.CONSTANT_COMBINATOR.name;
     }
 
     public ConstantCombinator(Position position) {
@@ -46,10 +44,5 @@ public final class ConstantCombinator extends SingularConnectionEntity<ConstantC
 
     public ConstantCombinator addFilter(Signal signal, int count, int index) {
         return addFilter(new Filter(signal, count, index));
-    }
-
-    // using SignalLibrary with String
-    public ConstantCombinator addFilter(String signal, int count, int index) {
-        return addFilter(get(signal), count, index);
     }
 }

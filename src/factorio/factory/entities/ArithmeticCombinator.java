@@ -1,18 +1,13 @@
 package factorio.factory.entities;
 
 import factorio.factory.entities.common.DoubleConnectionEntity;
-import factorio.object.ArithmeticCondition;
-import factorio.object.ControlBehaviour;
-import factorio.object.Position;
-import factorio.object.Signal;
-
-import static factorio.factory.SignalLibrary.get;
+import factorio.object.*;
 
 public final class ArithmeticCombinator extends DoubleConnectionEntity<ArithmeticCombinator> {
 
     public ArithmeticCombinator() {
         super();
-        name = "arithmetic-combinator";
+        name = Signal.ARITHMETIC_COMBINATOR.name;
     }
 
     public ArithmeticCombinator(Position position) {
@@ -35,36 +30,19 @@ public final class ArithmeticCombinator extends DoubleConnectionEntity<Arithmeti
         return this;
     }
 
-    public ArithmeticCombinator setCondition(Signal first_signal, Signal second_signal, String operation, Signal output_signal) {
+    public ArithmeticCombinator setCondition(Signal first_signal, Signal second_signal, Operation operation, Signal output_signal) {
         return setCondition(new ArithmeticCondition(first_signal, second_signal, operation, output_signal));
     }
 
-    public ArithmeticCombinator setCondition(Signal first_signal, Integer second_constant, String operation, Signal output_signal) {
+    public ArithmeticCombinator setCondition(Signal first_signal, Integer second_constant, Operation operation, Signal output_signal) {
         return setCondition(new ArithmeticCondition(first_signal, second_constant, operation, output_signal));
     }
 
-    public ArithmeticCombinator setCondition(Integer first_constant, Signal second_signal, String operation, Signal output_signal) {
+    public ArithmeticCombinator setCondition(Integer first_constant, Signal second_signal, Operation operation, Signal output_signal) {
         return setCondition(new ArithmeticCondition(first_constant, second_signal, operation, output_signal));
     }
 
-    public ArithmeticCombinator setCondition(Integer first_constant, Integer second_constant, String operation, Signal output_signal) {
+    public ArithmeticCombinator setCondition(Integer first_constant, Integer second_constant, Operation operation, Signal output_signal) {
         return setCondition(new ArithmeticCondition(first_constant, second_constant, operation, output_signal));
-    }
-
-    // using SignalLibrary with String
-    public ArithmeticCombinator setCondition(String first_signal, String second_signal, String operation, String output_signal) {
-        return setCondition(get(first_signal), get(second_signal), operation, get(output_signal));
-    }
-
-    public ArithmeticCombinator setCondition(String first_signal, Integer second_constant, String operation, String output_signal) {
-        return setCondition(get(first_signal), second_constant, operation, get(output_signal));
-    }
-
-    public ArithmeticCombinator setCondition(Integer first_constant, String second_signal, String operation, String output_signal) {
-        return setCondition(first_constant, get(second_signal), operation, get(output_signal));
-    }
-
-    public ArithmeticCombinator setCondition(Integer first_constant, Integer second_constant, String operation, String output_signal) {
-        return setCondition(first_constant, second_constant, operation, get(output_signal));
     }
 }

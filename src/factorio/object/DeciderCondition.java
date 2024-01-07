@@ -10,7 +10,7 @@ public final class DeciderCondition {
     @Expose
     public Integer constant;
     @Expose
-    public String comparator;
+    public Comparator comparator;
     @Expose
     public Signal output_signal;
     @Expose
@@ -21,7 +21,7 @@ public final class DeciderCondition {
     public DeciderCondition(
             Signal first_signal,
             Signal second_signal,
-            String comparator,
+            Comparator comparator,
             Signal output_signal,
             boolean copy_count_from_input
     ) {
@@ -35,7 +35,7 @@ public final class DeciderCondition {
     public DeciderCondition(
             Signal first_signal,
             Integer constant,
-            String comparator,
+            Comparator comparator,
             Signal output_signal,
             boolean copy_count_from_input
     ) {

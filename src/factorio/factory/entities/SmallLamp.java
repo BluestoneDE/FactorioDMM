@@ -6,12 +6,10 @@ import factorio.object.ControlBehaviour;
 import factorio.object.Position;
 import factorio.object.Signal;
 
-import static factorio.factory.SignalLibrary.get;
-
 public class SmallLamp extends SingularConnectionEntity<SmallLamp> {
     public SmallLamp() {
         super();
-        name = "small-lamp";
+        name = Signal.SMALL_LAMP.name;
     }
 
     public SmallLamp(Position position) {
@@ -42,18 +40,5 @@ public class SmallLamp extends SingularConnectionEntity<SmallLamp> {
 
     public SmallLamp setCondition(boolean useColors, Signal first_signal, Integer constant, String comparator) {
         return setCondition(useColors, new CircuitCondition(first_signal, constant, comparator));
-    }
-
-    // using SignalLibrary with String
-    public SmallLamp setCondition(boolean useColors, String first_signal) {
-        return setCondition(useColors, get(first_signal));
-    }
-
-    public SmallLamp setCondition(boolean useColors, String first_signal, String second_signal, String comparator) {
-        return setCondition(useColors, get(first_signal), get(second_signal), comparator);
-    }
-
-    public SmallLamp setCondition(boolean useColors, String first_signal, Integer constant, String comparator) {
-        return setCondition(useColors, get(first_signal), constant, comparator);
     }
 }
