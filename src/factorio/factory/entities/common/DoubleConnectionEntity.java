@@ -1,9 +1,6 @@
 package factorio.factory.entities.common;
 
-import factorio.object.Connection;
-import factorio.object.ConnectionData;
-import factorio.object.ConnectionPoint;
-import factorio.object.Entity;
+import factorio.object.*;
 
 import java.util.ArrayList;
 
@@ -23,6 +20,11 @@ public abstract class DoubleConnectionEntity<E> extends Entity {
                 if (connections.p2.red == null) connections.p2.red = new ArrayList<>();
             } else if (connections.p2.green == null) connections.p2.green = new ArrayList<>();
         }
+    }
+
+    public E setPosition(Float x, Float y) {
+        this.position = new Position(x, y);
+        return (E) this;
     }
 
     // using ConnectionData
