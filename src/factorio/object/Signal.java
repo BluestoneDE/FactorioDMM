@@ -108,7 +108,7 @@ public enum Signal {
     LOCOMOTIVE("locomotive", "item"),
     CARGO_WAGON("cargo-wagon", "item"),
     FLUID_WAGON("fluid-wagon", "item"),
-    ARTILLERY_WAGON("artillery-wagon-cannon", "item"),
+    ARTILLERY_WAGON("artillery-wagon", "item"),
     CAR("car", "item"),
     TANK("tank", "item"),
     SPIDERTRON("spidertron", "item"),
