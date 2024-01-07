@@ -24,6 +24,11 @@ public final class ArithmeticCombinator extends DoubleConnectionEntity<Arithmeti
         this.direction = direction;
     }
 
+    public ArithmeticCombinator setDirection(int direction) {
+        this.direction = direction;
+        return this;
+    }
+
     public ArithmeticCombinator setCondition(ArithmeticCondition condition) {
         if (control_behavior == null) control_behavior = new ControlBehaviour(condition);
         else control_behavior.arithmetic_conditions = condition;

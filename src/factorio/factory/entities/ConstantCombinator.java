@@ -16,18 +16,19 @@ public final class ConstantCombinator extends SingularConnectionEntity<ConstantC
         name = Signal.CONSTANT_COMBINATOR.name;
     }
 
-    public ConstantCombinator(Position position) {
-        this();
-        this.position = position;
-    }
-
     public ConstantCombinator(Float x, Float y) {
-        this(new Position(x, y));
+        this();
+        position = new Position(x, y);
     }
 
     public ConstantCombinator(Float x, Float y, int direction) {
         this(x, y);
         this.direction = direction;
+    }
+
+    public ConstantCombinator setDirection(int direction) {
+        this.direction = direction;
+        return this;
     }
 
     public ConstantCombinator setFilters(ArrayList<Filter> filters) {
@@ -37,7 +38,7 @@ public final class ConstantCombinator extends SingularConnectionEntity<ConstantC
     }
 
     public ConstantCombinator addFilter(Filter filter) {
-        if (control_behavior == null) setFilters(new ArrayList<>());
+        if (control_behavior == null) control_behavior = new ControlBehaviour(new ArrayList<>());
         control_behavior.filters.add(filter);
         return this;
     }
