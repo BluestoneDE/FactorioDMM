@@ -24,9 +24,8 @@ public class BitGIFGeneratorController {
 
     private ObservableList<File> pictureList;
     private int width, height, fontSize, previousIndex = 0;
-    private double brightness;
     private boolean copyMode = false;
-    private BitGIFCalculator factorioCalculator;
+    private BitGIFCalculator calculator;
 
     @FXML
     private ListView<File> pictureListView;
@@ -51,14 +50,16 @@ public class BitGIFGeneratorController {
     private void initialize() {
         pictureList = FXCollections.observableArrayList();
         pictureListView.setItems(pictureList);
-        factorioCalculator = new BitGIFCalculator();
+        calculator = new BitGIFCalculator();
     }
 
     @FXML
     private void open() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File(s)");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Images", "*.png", "*.jpg", "*.gif", "*.bmp", "*.jpeg"), new FileChooser.ExtensionFilter("PNG", "*.png"), new FileChooser.ExtensionFilter("JPG", "*.jpg"), new FileChooser.ExtensionFilter("GIF", "*.gif"), new FileChooser.ExtensionFilter("All Files", "*.*"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Images", "*.png", "*.jpg", "*.gif", "*.bmp", "*.jpeg"),
+                new FileChooser.ExtensionFilter("PNG", "*.png"), new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                new FileChooser.ExtensionFilter("GIF", "*.gif"), new FileChooser.ExtensionFilter("All Files", "*.*"));
         List<File> list = fileChooser.showOpenMultipleDialog(pictureListView.getScene().getWindow());
         if (list != null) {
             if (fileChooser.getSelectedExtensionFilter().getDescription().equals("GIF") || list.get(0).getName().endsWith(".gif")) {
@@ -88,9 +89,8 @@ public class BitGIFGeneratorController {
         }
         width = (int) image.getWidth();
         height = (int) image.getHeight();
-        brightness = 0.5;
         substationsCheckbox.setSelected(true);
-        brightnessSlider.setValue(brightness);
+        brightnessSlider.setValue(0.5);
         previewWidth.setText("Width: " + width + "px");
         previewHeight.setText("Height: " + height + "px");
         fontSize = 90;
@@ -133,11 +133,11 @@ public class BitGIFGeneratorController {
     private void math() {
         try {
             //blueprint
-            factorioCalculator.SetDimensions(width, height);
-            factorioCalculator.SetBrightness(brightness);
-            factorioCalculator.IncludeSubstations(substationsCheckbox.isSelected());
-            factorioCalculator.SetSubstationOffsets(substationOffsetX.getValue(), substationOffsetY.getValue());
-            Blueprint blueprint = factorioCalculator.CalculateBluePrintWithFile(pictureList);
+            calculator.SetDimensions(width, height);
+            calculator.SetBrightness(brightnessSlider.getValue());
+            calculator.IncludeSubstations(substationsCheckbox.isSelected());
+            calculator.SetSubstationOffsets(substationOffsetX.getValue(), substationOffsetY.getValue());
+            Blueprint blueprint = calculator.CalculateBluePrintWithFile(pictureList);
             previewTextArea.setFont(Font.font("Consolas Bold", 9.0));
             previewTextArea.setText(BlueprintStringEncoder.Encode(blueprint));
             previewTextArea.setWrapText(true);
@@ -168,19 +168,20 @@ public class BitGIFGeneratorController {
     @SuppressWarnings("CallToThreadRun")
     private void updatePreview() {
         copyMode = false;
-        brightness = brightnessSlider.getValue();
+        double brightness = brightnessSlider.getValue();
         StringBuilder previewText = new StringBuilder();
         Image image = new Image(pictureListView.getFocusModel().getFocusedItem().toURI().toString());
         PixelReader pixelReader = image.getPixelReader();
         new Thread(() -> {
             for (int readY = 0; readY < height; readY++) {
                 for (int readX = 0; readX < width; readX++) {
-                    int subY = height - readY + substationOffsetY.getValue() + 18, subX = width - readX + substationOffsetX.getValue() + 18;
-                    if (substationsCheckbox.isSelected() && subY % 18 - subY % 2 == 0 && subX % 18 - subX % 2 == 0) {
+                    int subY = height - readY + substationOffsetY.getValue() + 18;
+                    int subX = width - readX + substationOffsetX.getValue() + 18;
+                    if (substationsCheckbox.isSelected() && subY % 18 - subY % 2 == 0 && subX % 18 - subX % 2 == 0)
                         previewText.append("▄▀ ");
-                    } else if (readX < image.getWidth() && readY < image.getHeight() && pixelReader.getColor(readX, readY).getBrightness() >= brightness) {
+                    else if (readX < image.getWidth() && readY < image.getHeight() && pixelReader.getColor(readX, readY).getBrightness() >= brightness)
                         previewText.append("██ ");
-                    } else previewText.append("░░ ");
+                    else previewText.append("░░ ");
                 }
                 if (readY < height - 1) previewText.append("\n");
             }
