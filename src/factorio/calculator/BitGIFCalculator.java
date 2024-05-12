@@ -21,30 +21,57 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class FactorioCalculator {
+/**
+ * This class is responsible for calculating the blueprint entities from the given images.
+ */
+public class BitGIFCalculator {
 
+    private int width, height, substationOffsetX, substationOffsetY;
     private Integer[][] arrangement;
+    private double brightness;
+    private boolean substations;
 
-    public FactorioCalculator() {
+    /**
+     * If true, the calculator will try to optimize the unique signals by removing duplicates.
+     * If false, the calculator will place a lamp for every signal.
+     * This is useful for debugging and testing purposes.
+     */
+    private final boolean optimizeSignals = true;
 
+    public void SetDimensions(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
-    public Blueprint CalculateBluePrintWithFile(int height, int width, double brightness, int substationOffsetX, int substationOffsetY, boolean substations, boolean optimizeSignals, List<File> pictureList) throws FileNotFoundException {
+    public void SetBrightness(double brightness) {
+        this.brightness = brightness;
+    }
+
+    public void IncludeSubstations(boolean substations) {
+        this.substations = substations;
+    }
+
+    public void SetSubstationOffsets(int substationOffsetX, int substationOffsetY) {
+        this.substationOffsetX = substationOffsetX;
+        this.substationOffsetY = substationOffsetY;
+    }
+
+    public Blueprint CalculateBluePrintWithFile(List<File> pictureList) throws FileNotFoundException {
         var FilesAsInputStreams = new LinkedList<InputStream>();
         for (File x : pictureList) {
             FilesAsInputStreams.add(new FileInputStream(x));
         }
-        return CalculateBluePrint(height, width, brightness, substationOffsetX, substationOffsetY, substations, optimizeSignals, FilesAsInputStreams);
+        return CalculateBluePrint(FilesAsInputStreams);
     }
 
-    public Blueprint CalculateBluePrint(int height, int width, double brightness, int substationOffsetX, int substationOffsetY, boolean substations, boolean optimizeSignals, List<InputStream> pictureList) {
+    public Blueprint CalculateBluePrint(List<InputStream> pictureList) {
         //calculate raw values from pixels without optimisation
-        calculateRawValues(height, width, brightness, pictureList);
+        calculateRawValues(pictureList);
         //start placing the blueprint entities
         ArrayList<Entity> entities = new ArrayList<>();
         Entity.resetEntityCount();
         //add substations and remove lights
-        if (substations) entities.addAll(calculateSubstations(height, width, substationOffsetX, substationOffsetY));
+        if (substations) entities.addAll(calculateSubstations());
         //optimize values into output
         ArrayList<Integer> signalValues = new ArrayList<>();
         int lastLamp = 0;
@@ -55,14 +82,14 @@ public class FactorioCalculator {
             if (column > 0) {
                 for (int row = 0; row < height; row++) {
                     if (arrangement[row][column] == null) continue;
-                    if ((!signalValues.contains(arrangement[row][column])  arrangement[row][column] != 0) || !optimizeSignals)
+                    if ((!signalValues.contains(arrangement[row][column]) && arrangement[row][column] != 0) || !optimizeSignals)
                         signalValues.add(arrangement[row][column]);
                 }
             }
             //place combinators
             if (!SignalLibrary.has(signalValues.size() - 1)) {
                 signalValues.subList(valuesLength, signalValues.size()).clear();
-                entities.addAll(calculateCombinators(signalValues, column, width));
+                entities.addAll(calculateCombinators(signalValues, column));
                 signalValues.clear();
                 placedCombinators = true;
                 redLine = true;
@@ -91,15 +118,15 @@ public class FactorioCalculator {
             }
             placedCombinators = false;
         }
-        if (!signalValues.isEmpty())
-            entities.addAll(calculateCombinators(signalValues, width, width)); //Second width was global access before refactor LOL
+        if (!signalValues.isEmpty()) entities.addAll(calculateCombinators(signalValues, width));
         //frame control combinator
-        entities.add(new ConstantCombinator(.5F, .5F).addFilter(Signal.BLACK, 0, 1).addFilter(Signal.WHITE, 1, 11).addRedConnection(lastLamp));
+        entities.add(new ConstantCombinator(.5F, .5F).addFilter(Signal.BLACK, 0, 1)
+                .addFilter(Signal.WHITE, 1, 11).addRedConnection(lastLamp));
         //blueprint
         return new Blueprint("FactorioDMM-output", entities, SignalLibrary.getIcons(Signal.SMALL_LAMP), 281479271743489L);
     }
 
-    private void calculateRawValues(int height, int width, double brightness, List<InputStream> pictureList) {
+    private void calculateRawValues(List<InputStream> pictureList) {
         arrangement = new Integer[height][width];
         Arrays.stream(arrangement).forEach(a -> Arrays.fill(a, 0));
         if (pictureList != null)
@@ -114,11 +141,11 @@ public class FactorioCalculator {
             }
     }
 
-    private ArrayList<Entity> calculateSubstations(int height, int width, int substationOffsetX, int substationOffsetY) {
+    private ArrayList<Entity> calculateSubstations() {
         return new ArrayList<>() {{
             for (int subX = substationOffsetX + width; subX > -9; subX -= 18)
                 for (int subY = substationOffsetY + height; subY > -9; subY -= 18) {
-                    Entity substation = buildSubstation(subX, subY, width, height, substationOffsetX, substationOffsetY);
+                    Entity substation = buildSubstation(subX, subY);
                     add(substation);
                     //remove lights
                     if (subX <= width && subY <= height) {
@@ -135,7 +162,7 @@ public class FactorioCalculator {
         }};
     }
 
-    private Entity buildSubstation(int subX, int subY, int width, int height, int substationOffsetX, int substationOffsetY) {
+    private Entity buildSubstation(int subX, int subY) {
         EntityBuilder substation = new EntityBuilder("substation", -width + subX * 1F, -height + subY * 1F);
         if (subY > 9) substation.addNeighbour(substation.next_number);
         if (subY != substationOffsetY + height) substation.addNeighbour(substation.previous_number);
@@ -148,11 +175,14 @@ public class FactorioCalculator {
         return substation.build();
     }
 
-    private ArrayList<Entity> calculateCombinators(ArrayList<Integer> signalValues, int column, int width) {
+    private ArrayList<Entity> calculateCombinators(ArrayList<Integer> signalValues, int column) {
         float widthOffset = column - width;
         return new ArrayList<>() {{
             ArithmeticCombinator arithmeticCombinator = new ArithmeticCombinator(widthOffset - .5F, 1F);
-            add(arithmeticCombinator.setCondition(Signal.EACH, Signal.BLACK, Operation.LEFT_SHIFT, Signal.EACH).addRedInputConnection(arithmeticCombinator.previous_number).addGreenInputConnection(arithmeticCombinator.next_number).addGreenOutputConnection(arithmeticCombinator.previous_number));
+            add(arithmeticCombinator.setCondition(Signal.EACH, Signal.BLACK, Operation.LEFT_SHIFT, Signal.EACH)
+                    .addRedInputConnection(arithmeticCombinator.previous_number)
+                    .addGreenInputConnection(arithmeticCombinator.next_number)
+                    .addGreenOutputConnection(arithmeticCombinator.previous_number));
             for (int combinator = 0; combinator <= (signalValues.size() - 1) / ConstantCombinator.maxSignals; combinator++) {
                 int combinatorOffset = combinator * ConstantCombinator.maxSignals;
                 if (!SignalLibrary.has(combinatorOffset)) continue;

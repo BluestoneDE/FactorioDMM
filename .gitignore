@@ -4,3 +4,4 @@ target/*
 test files/*
 !test files/comic sans
 !test files/4x7 numbers
+.idea/*

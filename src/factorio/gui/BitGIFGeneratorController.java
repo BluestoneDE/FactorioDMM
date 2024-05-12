@@ -1,6 +1,6 @@
 package factorio.gui;
 
-import factorio.calculator.FactorioCalculator;
+import factorio.calculator.BitGIFCalculator;
 import factorio.decoders.GifDecoder.DecodedGif;
 import factorio.decoders.GifDecoder.GifDecoder;
 import factorio.encoders.BlueprintStringEncoder;
@@ -25,8 +25,8 @@ public class BitGIFGeneratorController {
     private ObservableList<File> pictureList;
     private int width, height, fontSize, previousIndex = 0;
     private double brightness;
-    private boolean copyMode = false, optimizeSignals = true;
-    private FactorioCalculator factorioCalculator;
+    private boolean copyMode = false;
+    private BitGIFCalculator factorioCalculator;
 
     @FXML
     private ListView<File> pictureListView;
@@ -51,20 +51,14 @@ public class BitGIFGeneratorController {
     private void initialize() {
         pictureList = FXCollections.observableArrayList();
         pictureListView.setItems(pictureList);
-        factorioCalculator = new FactorioCalculator();
+        factorioCalculator = new BitGIFCalculator();
     }
 
     @FXML
     private void open() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File(s)");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("All Images", "*.png", "*.jpg", "*.gif", "*.bmp", "*.jpeg", "*.bmp"),
-                new FileChooser.ExtensionFilter("PNG", "*.png"),
-                new FileChooser.ExtensionFilter("JPG", "*.jpg"),
-                new FileChooser.ExtensionFilter("GIF", "*.gif"),
-                new FileChooser.ExtensionFilter("All Files", "*.*")
-        );
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Images", "*.png", "*.jpg", "*.gif", "*.bmp", "*.jpeg"), new FileChooser.ExtensionFilter("PNG", "*.png"), new FileChooser.ExtensionFilter("JPG", "*.jpg"), new FileChooser.ExtensionFilter("GIF", "*.gif"), new FileChooser.ExtensionFilter("All Files", "*.*"));
         List<File> list = fileChooser.showOpenMultipleDialog(pictureListView.getScene().getWindow());
         if (list != null) {
             if (fileChooser.getSelectedExtensionFilter().getDescription().equals("GIF") || list.get(0).getName().endsWith(".gif")) {
@@ -122,8 +116,7 @@ public class BitGIFGeneratorController {
                 ImageIO.write(img.image, "png", f);
                 pictureList.add(f);
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error reading");
             alert.setHeaderText("Can not read file:" + file.getName());
@@ -140,15 +133,18 @@ public class BitGIFGeneratorController {
     private void math() {
         try {
             //blueprint
-            Blueprint blueprint = factorioCalculator.CalculateBluePrintWithFile(height, width, brightness,substationOffsetX.getValue(), substationOffsetY.getValue(),substationsCheckbox.isSelected(), optimizeSignals, pictureList);
+            factorioCalculator.SetDimensions(width, height);
+            factorioCalculator.SetBrightness(brightness);
+            factorioCalculator.IncludeSubstations(substationsCheckbox.isSelected());
+            factorioCalculator.SetSubstationOffsets(substationOffsetX.getValue(), substationOffsetY.getValue());
+            Blueprint blueprint = factorioCalculator.CalculateBluePrintWithFile(pictureList);
             previewTextArea.setFont(Font.font("Consolas Bold", 9.0));
             previewTextArea.setText(BlueprintStringEncoder.Encode(blueprint));
             previewTextArea.setWrapText(true);
             copyMode = true;
             previewTextArea.requestFocus();
             selectAll();
-        }
-        catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error reading");
             alert.setHeaderText("Can not read file");

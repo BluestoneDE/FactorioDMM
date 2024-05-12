@@ -6,11 +6,13 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("gui/BitGIFGenerator.fxml")), 764, 541));
+        primaryStage.setScene(new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("gui/BitGIFGenerator.fxml"))), 764, 541));
         primaryStage.setTitle("Factorio Display Math Machine");
         primaryStage.getIcons().add(new Image("/fdmm.png"));
         primaryStage.setMinWidth(440);
