@@ -1,39 +1,20 @@
 package factorio.object;
 
+import com.google.gson.annotations.Expose;
+
 public class Filter {
-    public SignalID signal;
+    @Expose
+    public Signal signal;
+    @Expose
     public int count;
+    @Expose
     public int index;
 
     public Filter() {}
 
-    public Filter(SignalID signal, int count, int index) {
+    public Filter(Signal signal, int count, int index) {
         this.signal = signal;
         this.count = count;
-        this.index = index;
-    }
-
-    public SignalID getSignal() {
-        return signal;
-    }
-
-    public void setSignal(SignalID signal) {
-        this.signal = signal;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
         this.index = index;
     }
 }
