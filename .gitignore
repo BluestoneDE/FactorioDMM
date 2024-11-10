@@ -1,6 +1,11 @@
 # Output files
 out/*
 target/*
+
+# Test files
 test files/*
 !test files/comic sans
 !test files/4x7 numbers
+
+# IntelliJ IDEA files
+.idea/*
