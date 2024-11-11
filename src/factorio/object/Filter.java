@@ -1,20 +1,26 @@
 package factorio.object;
 
 import com.google.gson.annotations.Expose;
+import factorio.object.types.Quality;
 
 public class Filter {
     @Expose
-    public Signal signal;
+    public int index = 1;
     @Expose
-    public int count;
+    public String type, name;
     @Expose
-    public int index;
+    public Quality quality = Quality.NORMAL;
+    @Expose
+    public String comparator = "=";
+    @Expose
+    public int count = 1;
 
     public Filter() {}
 
     public Filter(Signal signal, int count, int index) {
-        this.signal = signal;
-        this.count = count;
         this.index = index;
+        this.type = signal.type;
+        this.name = signal.name;
+        this.count = count;
     }
 }
