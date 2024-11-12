@@ -1,5 +1,11 @@
 package factorio.object.types;
 
-public interface Type {
-    public String getType();
+import com.google.gson.annotations.SerializedName;
+
+public enum Type {
+    @SerializedName("virtual") VIRTUAL,
+    @SerializedName("fluid") FLUID,
+    @SerializedName("entity") ENTITY,
+    @SerializedName("recipe") RECIPE,
+    @SerializedName("quality") QUALITY,
 }

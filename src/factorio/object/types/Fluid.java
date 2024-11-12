@@ -2,7 +2,7 @@ package factorio.object.types;
 
 import com.google.gson.annotations.SerializedName;
 
-public enum Fluid implements Type {
+public enum Fluid implements TypeInterface {
     // Vanilla
     @SerializedName("water") WATER,
     @SerializedName("steam") STEAM,
@@ -30,10 +30,23 @@ public enum Fluid implements Type {
     @SerializedName("fluoroketone-cold") FLUOROKETONE_COLD,
     @SerializedName("lithium-brine") LITHIUM_BRINE,
     // Space Age: Fusion Reactor
-    @SerializedName("fusion-plasma") FUSION_PLASMA;
+    @SerializedName("fusion-plasma") FUSION_PLASMA,
+    // Parameters
+    @SerializedName("parameter-0") PARAMETER_0,
+    @SerializedName("parameter-1") PARAMETER_1,
+    @SerializedName("parameter-2") PARAMETER_2,
+    @SerializedName("parameter-3") PARAMETER_3,
+    @SerializedName("parameter-4") PARAMETER_4,
+    @SerializedName("parameter-5") PARAMETER_5,
+    @SerializedName("parameter-6") PARAMETER_6,
+    @SerializedName("parameter-7") PARAMETER_7,
+    @SerializedName("parameter-8") PARAMETER_8,
+    @SerializedName("parameter-9") PARAMETER_9,
+    // Unknown
+    @SerializedName("unknown") UNKNOWN;
 
     @Override
-    public String getType() {
-        return "fluid";
+    public Type getType() {
+        return Type.FLUID;
     }
 }
